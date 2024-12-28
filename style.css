@@ -1,0 +1,11 @@
+/* styles.css */
+body {
+    background-color: rgb(14, 19, 20);
+}
+h1 {
+    color: red;
+    text-align: center;
+}
+p {
+    font-size: 16px;
+}
