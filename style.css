@@ -3,11 +3,62 @@
 body {
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url("thrift\ clothes.jpg");
-  background-size: cover; /* Added this line */
-  background-color: #000;
+  background-size: cover;
   margin: 0;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+/* From Uiverse.io by ShrinilDhorda */ 
+.btn {
+  font-size: 10px;
+  padding: 15px;
+  border: none;
+  outline: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  background-color: rgb(255, 0, 0);
+  color: rgb(234, 234, 234);
+  font-weight: 700;
+  transition: 0.6s;
+  box-shadow: 0px 0px 60px #ff0000;
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+}
+
+.btn:active {
+  scale: 0.92;
+}
+
+.btn:hover {
+  background: rgb(255, 4, 4);
+  background: linear-gradient(270deg, rgba(255, 0, 0, 0.681) 0%, rgba(31, 215, 232, 0.873) 60%);
+  color: rgb(255, 0, 0);
+  background-position-y: -3px;
+}
+
+
+#logo{
+  display: block;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+spline-viewer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+nav{
     
+ 
+    padding: 10px;
+    text-align: right;
+    word-spacing: 20px;
+    font-size: 20px;
+    text-shadow: 4px 4px 4px #aaa;
 }
 h1 {
     color: rgb(255, 255, 255);
@@ -181,44 +232,6 @@ p {
 
   /* css for card with pic */
   /* From Uiverse.io by LilaRest */ 
-.card {
-    --bg: #e8e8e8;
-    --contrast: #e2e0e0;
-    --grey: #93a1a1;
-    position: relative;
-    padding: 9px;
-    background-color: var(--bg);
-    border-radius: 35px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-  }
-  
-  .card-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: repeating-conic-gradient(var(--bg) 0.0000001%, var(--grey) 0.000104%) 60% 60%/600% 600%;
-    filter: opacity(10%) contrast(105%);
-  }
-  
-  .card-inner {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    width: 190px;
-    height: 254px;
-    background-color: var(--contrast);
-    border-radius: 30px;
-    /* Content style */
-    font-size: 30px;
-    font-weight: 900;
-    color: #c7c4c4;
-    text-align: center;
-    font-family: monospace;
-  }
-  /* end of css for card with pic */
 
   
   /* From Uiverse.io by andrew-demchenk0 */ 
