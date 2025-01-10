@@ -1,0 +1,74 @@
+<html lang="en">
+    <head>
+      
+          
+        <title>SneakyFinds</title>
+        <link rel="stylesheet" href="style1.css">
+        <!--Google API for fonts-->
+        <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Tangerine">
+         
+    
+
+
+</head>
+
+<body>
+  <script src="script.js"></script> <!-- Link to  JavaScript file -->
+
+<!-- section for the top navigation ---->
+    
+<section id = "header">
+    <a href="#"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px ; "></a>
+  
+    <div>
+      <ul id="navbar">
+        <li><a href="index.html" >Home</a></li>
+          <li><a href="shop.html" >Shop</a></li>
+          <li><a href="#" >About</a></li>
+          <li><a href="login.html" >Login</a></li>
+          <li> <a href="contact.html" >Contact</a> </li>
+      </ul>
+    
+      
+  </div>
+  <div class="shopping-cart" onclick="togglePopup()">
+    <img src="cart.png" alt="Shopping Cart"> <!--cart icon or pic-->
+    <span id="cartCount">0</span>
+    <div id="cartPopup" class="popup" style="display: none;">
+      <h4>Shopping Cart</h4>
+      <ul id="cartItems">
+        <!-- Cart items will be added here -->
+      </ul>
+      <p>Total: R<span id="cartTotal">0</span></p>
+      <button id="closeButton">Close</button>
+      <a href="cart.html">Checkout</a> <!-- Changed the onclick attribute to an id -->
+    </div>
+    <div class="overlay" id="overlay" onclick="hidePopup()"></div>
+  
+  </section>
+
+
+  <!-- Section for the pics and SneakyFinds label -->
+<section id="sneakyfinds">
+  <div class="section-header">
+    <h2>SneakyFinds</h2>
+    <h3>Good Prices, Great Steals!</h3>
+  </div>
+  <div class="image-gallery">
+    <img src="football shirt.jpg" alt="Football Shirt">
+    <img src="jackets.jpg" alt="Jackets">
+    <img src="pants.jpg" alt="Pants">
+    <img src="old money fits.jpg" alt="Old Money Fits">
+    <img src="shirts.jpg" alt="Shirts">
+  </div>
+</section>
+
+
+
+</body>
+
+
+
+
+
+</html>
