@@ -1,89 +1,110 @@
-#header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /*This horizontally spaces out the child elements of the
-     #header so that they are evenly distributed, with the first item aligned to the 
-     start and the last item aligned to the end of the container.*/
-    padding: 0px 80px;/* padding from top and bottom will be 20px and from left and right will be 80px*/
-    background : rgb(201, 201, 201);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.0.06);
-  
-  }
-  #navbar{
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-  }
-  #navbar li {
-    
-    list-style: none;
-    padding: 0 20px;
-    position: relative;
-  }
-  #navbar li a {
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* This horizontally spaces out the child elements of the #header so that they are evenly distributed, with the first item aligned to the start and the last item aligned to the end of the container. */
+  padding: 0px 80px; /* padding from top and bottom will be 20px and from left and right will be 80px */
+  background: rgba(116, 112, 112, 0.555);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+  position: sticky; /* this makes the header sticky so whenever they scroll down it will still be visible */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* ensures the header stays on top of other elements */
+}
 
-    text-decoration: none;
-    color: rgb(255, 255, 255);
-    font-size: 16px;
-    font-weight: 600;
-    transition: 0.3s ease;
-  }
-  #navbar li a:hover ,
-  #navbar li a:active {
-    color: #d40b0b;
-  }
-  #navbar li a:active::after,
-  #navbar li a:hover::after {
-    content: '';
-    width: 30%;
-    height: 2px;
-    background: #d40b0b;
-    position: absolute;
-    bottom: -4px; 
-    left: 20px;
-  }
+#navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#navbar li {
+  list-style: none;
+  padding: 0 20px;
+  position: relative;
+}
+
+#navbar li a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+#navbar li a:hover,
+#navbar li a:active {
+  color: #d40b0b;
+}
+
+#navbar li a:active::after,
+#navbar li a:hover::after {
+  content: '';
+  width: 30%;
+  height: 2px;
+  background: #d40b0b;
+  position: absolute;
+  bottom: -4px;
+  left: 20px;
+}
  
-  /* CSS for SneakyFinds Section */
+ /* CSS for SneakyFinds Section */
+/* Section Styling */
 #sneakyfinds {
+  position: relative;
   text-align: center;
-  margin: 40px 0;
-  padding: 20px;
-  background-color: rgb(240, 240, 240); /* Light background color for distinction */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  height: 600px; /* Adjust based on your content */
+  background-color: #f5f5f500; /* Light background for contrast */
+  overflow: hidden;
+  
 }
 
-#sneakyfinds .section-header h2 {
-  font-size: 46px;
+/* Overlay Text Styling */
+.section-header {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.section-header h1 {
+  font-size: 160px;
   font-weight: bold;
-  margin-bottom: 10px;
-  /* Matches the Google font you imported */
-  color: #ffffff; /* white accent color */
+  margin: 0;
+  font-family: 'Ariel';
+  
 }
 
-#sneakyfinds .section-header h3 {
-  font-size: 20px;
-  color: #ffffff;
+.section-header h3 {
+  font-size: 50px;
+  margin: 10px 0 0;
   font-family: Arial, sans-serif;
 }
 
-.image-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid layout */
-  gap: 20px;
-  margin-top: 20px;
-  padding: 0 20px;
+/* Image Banner Styling */
+.image-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
-.image-gallery img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+.image-banner img {
+  height: 110%; /* Ensures uniform height */
+  width: 20%; /* Maintains aspect ratio */
+  margin: 0 5px; /* Spacing between images */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Adds depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.image-gallery img:hover {
-  transform: scale(1.05); /* Slight zoom-in effect on hover */
+.image-banner img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Hover effect */
 }
 
 
@@ -133,3 +154,135 @@
     right: 0;
     transform: translate(50%, -50%);
   }
+
+  /*css for background image*/
+  @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:200');
+
+body  {
+    background-image: url('https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg');
+  background-size:cover;
+        -webkit-animation: slidein 100s;
+        animation: slidein 100s;
+
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+
+        -webkit-animation-direction: alternate;
+        animation-direction: alternate;              
+}
+
+@-webkit-keyframes slidein {
+from {background-position: top; background-size:3000px; }
+to {background-position: -100px 0px;background-size:2750px;}
+}
+
+@keyframes slidein {
+from {background-position: top;background-size:3000px; }
+to {background-position: -100px 0px;background-size:2750px;}
+
+}
+
+
+
+.center
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(75, 75, 250, 0.3);
+  border-radius: 3px;
+}
+.center h1{
+  text-align:center;
+  color:white;
+  font-family: 'Source Code Pro', monospace;
+  text-transform:uppercase;
+}
+
+
+
+
+#shopNow{
+  
+  font-size: 20px;
+  padding: 15px;
+  border: none;
+  outline: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  background-color: rgb(255, 0, 0);
+  color: rgb(234, 234, 234);
+  font-weight: 700;
+  transition: 0.6s;
+  box-shadow: 0px 0px 60px #ff0000;
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+}
+
+#shopNow:active {
+  scale: 0.92;
+}
+
+#shopNow:hover {
+  background: rgb(255, 4, 4);
+  background: linear-gradient(270deg, rgba(255, 0, 0, 0.681) 0%, rgba(31, 215, 232, 0.873) 60%);
+  color: rgb(255, 0, 0);
+  background-position-y: -3px;
+}
+
+
+/*about us section*/
+#about-us {
+  padding: 50px;
+  background-color: #b9b2b28f;
+  text-align: center;
+  box-shadow: inset;
+  border-radius: 10px;
+}
+
+.about-us-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+#about-us h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+#about-us h3 {
+  font-size: 1.8em;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+#about-us p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+#about-us ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#about-us ul li {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+#about-us ul li strong {
+  color: #ff0000;
+}
