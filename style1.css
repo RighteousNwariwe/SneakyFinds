@@ -246,7 +246,7 @@ to {background-position: -100px 0px;background-size:2750px;}
   background-color: #b9b2b28f;
   text-align: center;
   box-shadow: inset;
-  border-radius: 10px;
+  border-radius: 50px;
 }
 
 .about-us-container {
@@ -256,6 +256,7 @@ to {background-position: -100px 0px;background-size:2750px;}
 }
 
 #about-us h2 {
+  
   font-size: 2.5em;
   margin-bottom: 20px;
 }
