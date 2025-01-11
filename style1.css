@@ -287,3 +287,60 @@ to {background-position: -100px 0px;background-size:2750px;}
 #about-us ul li strong {
   color: #ff0000;
 }
+
+/*cookie consent*/
+#cookieConsent {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  z-index: 1000;
+  display: none; /* Initially hidden */
+}
+
+#cookieConsentContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#cookieConsent p {
+  margin: 0;
+  padding: 0 10px;
+}
+
+#cookieConsent button {
+  background-color: #d40b0b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#cookieConsent button:hover {
+  background-color: #a00a0a;
+}
+
+.footer-container {
+  text-align: center;
+  padding: 20px;
+  background-color: #333;
+  color: white;
+}
+
+.footer-links a {
+  color: white;
+  margin: 0 10px;
+  font-size: 24px;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #d40b0b;
+}
