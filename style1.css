@@ -327,11 +327,26 @@ to {background-position: -100px 0px;background-size:2750px;}
   background-color: #a00a0a;
 }
 
-.footer-container {
-  text-align: center;
-  padding: 20px;
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Footer styles */
+#footer {
   background-color: #333;
   color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: auto;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .footer-links a {
@@ -344,3 +359,6 @@ to {background-position: -100px 0px;background-size:2750px;}
 .footer-links a:hover {
   color: #d40b0b;
 }
+
+
+/* css for login form*/
