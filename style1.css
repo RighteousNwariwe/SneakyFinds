@@ -120,6 +120,10 @@
     display: flex;
     align-items: center;
   }
+  .shopping-cart:hover{
+    transform: scale(1.1);
+    transition: 0.3s;
+  }
   
   .shopping-cart img {
     width: 32px;
@@ -327,12 +331,7 @@ to {background-position: -100px 0px;background-size:2750px;}
   background-color: #a00a0a;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
+
 
 
 /* Footer styles */
@@ -342,7 +341,11 @@ html, body {
   text-align: center;
   padding: 20px;
   margin-top: auto;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
+
 
 .footer-container {
   max-width: 1200px;
@@ -360,5 +363,8 @@ html, body {
   color: #d40b0b;
 }
 
+@media screen and (max-width: 767px) {
+
+}
 
 /* css for login form*/
