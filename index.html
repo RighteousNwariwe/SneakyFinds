@@ -11,100 +11,101 @@
 <body>
   <script src="script.js"></script> <!-- Link to  JavaScript file -->
   
-<!-- section for the top navigation ---->
+  <div class="wrapper">
+    <!-- section for the top navigation ---->
     
 <section id = "header">
-    <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px ; "></a>
+  <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px ; "></a>
+
+  <div>
+    <ul id="navbar">
+      <li><a href="index.html" >Home</a></li>
+        <li><a href="shop.html" >Shop</a></li>
+        <li><a href="#about-us">About</a></li>
+        <li><a href="login.html" >Login</a></li>
+        <li> <a href="contact.html" >Contact Us</a> </li>
+    </ul>
   
-    <div>
-      <ul id="navbar">
-        <li><a href="index.html" >Home</a></li>
-          <li><a href="shop.html" >Shop</a></li>
-          <li><a href="#about-us">About</a></li>
-          <li><a href="login.html" >Login</a></li>
-          <li> <a href="contact.html" >Contact Us</a> </li>
-      </ul>
     
-      
+</div>
+<div class="shopping-cart" onclick="togglePopup()">
+  <img src="cart.png" alt="Shopping Cart"> <!--cart icon or pic-->
+  <span id="cartCount">0</span>
+  <div id="cartPopup" class="popup" style="display: none;">
+    <h4>Shopping Cart</h4>
+    <ul id="cartItems">
+      <!-- Cart items will be added here -->
+    </ul>
+    <p>Total: R<span id="cartTotal">0</span></p>
+    <button id="closeButton">Close</button>
+    <a href="cart.html">Checkout</a> <!-- Changed the onclick attribute to an id -->
   </div>
-  <div class="shopping-cart" onclick="togglePopup()">
-    <img src="cart.png" alt="Shopping Cart"> <!--cart icon or pic-->
-    <span id="cartCount">0</span>
-    <div id="cartPopup" class="popup" style="display: none;">
-      <h4>Shopping Cart</h4>
-      <ul id="cartItems">
-        <!-- Cart items will be added here -->
-      </ul>
-      <p>Total: R<span id="cartTotal">0</span></p>
-      <button id="closeButton">Close</button>
-      <a href="cart.html">Checkout</a> <!-- Changed the onclick attribute to an id -->
-    </div>
-    <div class="overlay" id="overlay" onclick="hidePopup()"></div>
-  
-  </section>
+  <div class="overlay" id="overlay" onclick="hidePopup()"></div>
 
-  <br>
-  <br>    
+</section>
 
-  <!-- Section for the pics and SneakyFinds label -->
+<br>
+<br>    
+
+<!-- Section for the pics and SneakyFinds label -->
 <section id="sneakyfinds">
-  <div class="section-header">
-    <h1>SneakyFinds</h1>
-    <h3>Good Prices, Great Steals!</h3>
-  </div>
-  <div class="image-banner">
-    <img src="brown1.jpg" alt="Jackets">
-    <img src="football shirts.jpg" alt="Football Shirts">
-    <img src="pants.jpg" alt="Pants">
-    <img src="old money fits.jpg" alt="Old Money Fits">
-    <img src="shirts .jpg" alt="Shirts">
-  </div>
+<div class="section-header">
+  <h1>SneakyFinds</h1>
+  <h3>Good Prices, Great Steals!</h3>
+</div>
+<div class="image-banner">
+  <img src="brown1.jpg" alt="Jackets">
+  <img src="football shirts.jpg" alt="Football Shirts">
+  <img src="pants.jpg" alt="Pants">
+  <img src="old money fits.jpg" alt="Old Money Fits">
+  <img src="shirts .jpg" alt="Shirts">
+</div>
 </section>
 <br>
 <br>
 
 <div style="display: flex; justify-content: center; align-items: center; ">
-  <button id="shopNow" onclick="window.location.href='shop.html'">
-    Shop Now!
-  </button>
+<button id="shopNow" onclick="window.location.href='shop.html'">
+  Shop Now!
+</button>
 
 </div>
 
 <section id="about-us">
-  <div class="about-us-container">
-    <h2>About Us</h2>
-    <p>Welcome to SneakyFinds, your ultimate online thrift store bringing you "Good Prices, Great Steals!"</p>
-    <p>We’re based in the heart of Vaal and Johannesburg East, proudly curating a wide selection of trendy, affordable, and high-quality pre-loved items. At SneakyFinds, we believe that thrift shopping should be fun, accessible, and a great way to embrace sustainability without breaking the bank.</p>
-    <h3>Why Choose Us?</h3>
-    <ul>
-      <li><strong>Affordable Prices:</strong> Amazing deals that fit your budget.</li>
-      <li><strong>Wide Range:</strong> From vintage gems to modern essentials, we’ve got it all!</li>
-      <li><strong>Convenience:</strong> Shop from the comfort of your home and have your finds delivered to your door.</li>
-    </ul>
-    <h3>Delivery Information</h3>
-    <p>We deliver across Gauteng at an extra fee, but here’s the kicker—delivery is free for students around NWU Vaal Campus and VUT! We’re all about supporting our local student community, so you can focus on hitting the books while we handle your thrifting needs.</p>
-    <p>Join the SneakyFinds community today and discover amazing steals that are just a click away. Let’s make thrift shopping stylish, affordable, and unforgettable!</p>
-    <p><strong>Happy thrifting!</strong><br>The SneakyFinds Team</p>
-  </div>
+<div class="about-us-container">
+  <h2>About Us</h2>
+  <p>Welcome to SneakyFinds, your ultimate online thrift store bringing you "Good Prices, Great Steals!"</p>
+  <p>We’re based in the heart of Vaal and Johannesburg East, proudly curating a wide selection of trendy, affordable, and high-quality pre-loved items. At SneakyFinds, we believe that thrift shopping should be fun, accessible, and a great way to embrace sustainability without breaking the bank.</p>
+  <h3>Why Choose Us?</h3>
+  <ul>
+    <li><strong>Affordable Prices:</strong> Amazing deals that fit your budget.</li>
+    <li><strong>Wide Range:</strong> From vintage gems to modern essentials, we’ve got it all!</li>
+    <li><strong>Convenience:</strong> Shop from the comfort of your home and have your finds delivered to your door.</li>
+  </ul>
+  <h3>Delivery Information</h3>
+  <p>We deliver across Gauteng at an extra fee, but here’s the kicker—delivery is free for students around NWU Vaal Campus and VUT! We’re all about supporting our local student community, so you can focus on hitting the books while we handle your thrifting needs.</p>
+  <p>Join the SneakyFinds community today and discover amazing steals that are just a click away. Let’s make thrift shopping stylish, affordable, and unforgettable!</p>
+  <p><strong>Happy thrifting!</strong><br>The SneakyFinds Team</p>
+</div>
 </section>
 
 <div id="cookieConsent">
-  <div id="cookieConsentContainer">
-    <p>We use cookies to ensure you get the best experience on our website.</p>
-    <button id="acceptCookies">Accept</button>
-  </div>
+<div id="cookieConsentContainer">
+  <p>We use cookies to ensure you get the best experience on our website.</p>
+  <button id="acceptCookies">Accept</button>
+</div>
 </div>
 
 <section id="footer">
-  <div class="footer-container">
-    <div class="footer-links">
-      <a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i></a>
-      <a href="https://www.instagram.com/your-profile" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="mailto:sneakyfinds04@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
-      <a href="https://t.me/your-telegram" target="_blank"><i class="fab fa-telegram"></i></a>
-      
-    </div>
+<div class="footer-container">
+  <div class="footer-links">
+    <a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://www.instagram.com/your-profile" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="mailto:sneakyfinds04@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+    <a href="https://t.me/your-telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+    
   </div>
+</div>
 </section>
 <script src="cookieConsent.js"></script>
 
@@ -115,24 +116,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ </div>
 
 
 

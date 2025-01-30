@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between; /* This horizontally spaces out the child elements of the #header so that they are evenly distributed, with the first item aligned to the start and the last item aligned to the end of the container. */
-  padding: 0px 80px; /* padding from top and bottom will be 20px and from left and right will be 80px */
+  padding: 0 5vw; /* padding from left and right will be 5% of the viewport width */
   background: rgba(116, 112, 112, 0.555);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
   position: sticky; /* this makes the header sticky so whenever they scroll down it will still be visible */
@@ -19,14 +19,14 @@
 
 #navbar li {
   list-style: none;
-  padding: 0 20px;
+  padding: 0 2vw; /* padding from left and right will be 2% of the viewport width */
   position: relative;
 }
 
 #navbar li a {
   text-decoration: none;
   color: rgb(255, 255, 255);
-  font-size: 16px;
+  font-size: 1rem; /* using rem for font size to make it scalable */
   font-weight: 600;
   transition: 0.3s ease;
 }
@@ -43,19 +43,48 @@
   height: 2px;
   background: #d40b0b;
   position: absolute;
-  bottom: -4px;
-  left: 20px;
+  bottom: -0.25rem; /* using rem for bottom position */
+  left: 2vw; /* using viewport width for left position */
 }
- 
- /* CSS for SneakyFinds Section */
+
+/* Media Queries for Phone Dimensions */
+@media (max-width: 600px) {
+  #header {
+    flex-direction: row;
+     /* Adjust spacing between words for smaller screens */
+    padding: 1rem; /* Adjust padding for smaller screens */
+  }
+
+  #navbar {
+    flex-direction: row;
+
+    align-items: flex-start;
+  }
+
+  #navbar li {
+    padding: 0.5rem 0; /* Adjust padding for smaller screens */
+    
+  }
+
+  #navbar li a {
+    font-size: 0.9rem; /* Adjust font size for smaller screens */
+  }
+}
+
+.wrapper {
+  width: auto;
+  padding: 10vh 0; /* padding from top and bottom will be 10% of the viewport height */
+  margin: 0 auto;
+}
+
+/* CSS for SneakyFinds Section */
 /* Section Styling */
 #sneakyfinds {
   position: relative;
   text-align: center;
-  height: 600px; /* Adjust based on your content */
+  height: 60vh; /* Adjust based on your content */
   background-color: #f5f5f500; /* Light background for contrast */
   overflow: hidden;
-  
 }
 
 /* Overlay Text Styling */
@@ -70,16 +99,15 @@
 }
 
 .section-header h1 {
-  font-size: 160px;
+  font-size: 15vw; /* using viewport width for font size */
   font-weight: bold;
   margin: 0;
-  font-family: 'Ariel';
-  
+  font-family: 'Arial';
 }
 
 .section-header h3 {
-  font-size: 50px;
-  margin: 10px 0 0;
+  font-size: 3vw; /* using viewport width for font size */
+  margin: 1vh 0 0; /* using viewport height for margin */
   font-family: Arial, sans-serif;
 }
 
@@ -94,9 +122,9 @@
 }
 
 .image-banner img {
-  height: 110%; /* Ensures uniform height */
+  height: 100%; /* Ensures uniform height */
   width: 20%; /* Maintains aspect ratio */
-  margin: 0 5px; /* Spacing between images */
+  margin: 0 1vw; /* Spacing between images using viewport width */
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Adds depth */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -107,92 +135,112 @@
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Hover effect */
 }
 
-
-
-
-
-
-
 /* css for shopping cart */
-  .shopping-cart {
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  .shopping-cart:hover{
-    transform: scale(1.1);
-    transition: 0.3s;
-  }
-  
-  .shopping-cart img {
-    width: 32px;
-    height: auto;
-  }
-  .container {
-    position: relative;
-  }
-  
-  .shopping-cart {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-  
-  .popup {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 20px;
-    max-width: 200px; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
-  
-  #cartCount {
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 14px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(50%, -50%);
-  }
+.shopping-cart {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
-  /*css for background image*/
-  @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:200');
+.shopping-cart:hover {
+  transform: scale(1.1);
+  transition: 0.3s;
+}
 
-body  {
-    background-image: url('https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg');
-  background-size:cover;
-        -webkit-animation: slidein 100s;
-        animation: slidein 100s;
+.shopping-cart img {
+  width: 32px;
+}
 
-        -webkit-animation-fill-mode: forwards;
-        animation-fill-mode: forwards;
 
-        -webkit-animation-iteration-count: infinite;
-        animation-iteration-count: infinite;
 
-        -webkit-animation-direction: alternate;
-        animation-direction: alternate;              
+/* Additional CSS for shopping cart */
+.shopping-cart {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.shopping-cart:hover {
+  transform: scale(1.1);
+  transition: 0.3s;
+}
+
+.shopping-cart img {
+  width: 32px;
+  height: auto;
+}
+
+.container {
+  position: relative;
+}
+
+.shopping-cart {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.popup {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  max-width: 200px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#cartCount {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 14px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+/* CSS for background image */
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:200');
+
+body {
+  background-image: url('https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg');
+  background-size: cover;
+  -webkit-animation: slidein 100s;
+  animation: slidein 100s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
 }
 
 @-webkit-keyframes slidein {
-from {background-position: top; background-size:3000px; }
-to {background-position: -100px 0px;background-size:2750px;}
+  from {
+    background-position: top;
+    background-size: 3000px;
+  }
+  to {
+    background-position: -100px 0px;
+    background-size: 2750px;
+  }
 }
 
 @keyframes slidein {
-from {background-position: top;background-size:3000px; }
-to {background-position: -100px 0px;background-size:2750px;}
-
+  from {
+    background-position: top;
+    background-size: 3000px;
+  }
+  to {
+    background-position: -100px 0px;
+    background-size: 2750px;
+  }
 }
 
-
-
-.center
-{
+.center {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -205,20 +253,17 @@ to {background-position: -100px 0px;background-size:2750px;}
   background: rgba(75, 75, 250, 0.3);
   border-radius: 3px;
 }
-.center h1{
-  text-align:center;
-  color:white;
+
+.center h1 {
+  text-align: center;
+  color: white;
   font-family: 'Source Code Pro', monospace;
-  text-transform:uppercase;
+  text-transform: uppercase;
 }
 
-
-
-
-#shopNow{
-  
-  font-size: 20px;
-  padding: 15px;
+#shopNow {
+  font-size: 1.25rem; /* using rem for font size */
+  padding: 1rem; /* using rem for padding */
   border: none;
   outline: none;
   border-radius: 0.4rem;
@@ -229,7 +274,7 @@ to {background-position: -100px 0px;background-size:2750px;}
   font-weight: 700;
   transition: 0.6s;
   box-shadow: 0px 0px 60px #ff0000;
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.4));
 }
 
 #shopNow:active {
@@ -243,10 +288,9 @@ to {background-position: -100px 0px;background-size:2750px;}
   background-position-y: -3px;
 }
 
-
-/*about us section*/
+/* About us section */
 #about-us {
-  padding: 50px;
+  padding: 3rem; /* using rem for padding */
   background-color: #b9b2b28f;
   text-align: center;
   box-shadow: inset;
@@ -260,21 +304,20 @@ to {background-position: -100px 0px;background-size:2750px;}
 }
 
 #about-us h2 {
-  
-  font-size: 2.5em;
-  margin-bottom: 20px;
+  font-size: 2.5rem; /* using rem for font size */
+  margin-bottom: 1.25rem; /* using rem for margin */
 }
 
 #about-us h3 {
-  font-size: 1.8em;
-  margin-top: 30px;
-  margin-bottom: 10px;
+  font-size: 1.8rem; /* using rem for font size */
+  margin-top: 1.875rem; /* using rem for margin */
+  margin-bottom: 0.625rem; /* using rem for margin */
 }
 
 #about-us p {
-  font-size: 1.2em;
+  font-size: 1.2rem; /* using rem for font size */
   line-height: 1.6;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem; /* using rem for margin */
 }
 
 #about-us ul {
@@ -283,16 +326,16 @@ to {background-position: -100px 0px;background-size:2750px;}
 }
 
 #about-us ul li {
-  font-size: 1.2em;
+  font-size: 1.2rem; /* using rem for font size */
   line-height: 1.6;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem; /* using rem for margin */
 }
 
 #about-us ul li strong {
   color: #ff0000;
 }
 
-/*cookie consent*/
+/* Cookie consent */
 #cookieConsent {
   position: fixed;
   bottom: 0;
@@ -300,7 +343,7 @@ to {background-position: -100px 0px;background-size:2750px;}
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   text-align: center;
-  padding: 10px 0;
+  padding: 0.625rem 0; /* using rem for padding */
   z-index: 1000;
   display: none; /* Initially hidden */
 }
@@ -315,14 +358,14 @@ to {background-position: -100px 0px;background-size:2750px;}
 
 #cookieConsent p {
   margin: 0;
-  padding: 0 10px;
+  padding: 0 0.625rem; /* using rem for padding */
 }
 
 #cookieConsent button {
   background-color: #d40b0b;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem; /* using rem for padding */
   cursor: pointer;
   border-radius: 5px;
 }
@@ -331,31 +374,27 @@ to {background-position: -100px 0px;background-size:2750px;}
   background-color: #a00a0a;
 }
 
-
-
-
 /* Footer styles */
 #footer {
   background-color: #333;
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 1.25rem; /* using rem for padding */
   margin-top: auto;
   position: fixed;
   bottom: 0;
   width: 100%;
 }
 
-
 .footer-container {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
 .footer-links a {
   color: white;
-  margin: 0 10px;
-  font-size: 24px;
+  margin: 0 0.625rem; /* using rem for margin */
+  font-size: 1.5rem; /* using rem for font size */
   transition: color 0.3s;
 }
 
@@ -363,8 +402,73 @@ to {background-position: -100px 0px;background-size:2750px;}
   color: #d40b0b;
 }
 
-@media screen and (max-width: 767px) {
+/* Media Queries for Phone Dimensions */
+@media (max-width: 600px) {
+  .wrapper-main {
+    padding: 5vh 0; /* Reduce padding for smaller screens */
+  }
 
+  #sneakyfinds {
+    height: 30vh; /* Adjust height for smaller screens */
+  }
+
+  .section-header h1 {
+    font-size: 10vw; /* Adjust font size for smaller screens */
+  }
+
+  .section-header h3 {
+    font-size: 3.5vw; /* Adjust font size for smaller screens */
+  }
+
+  .image-banner img {
+    height: 100%; /* Adjust height for smaller screens */
+    width: 30%; /* Adjust width for smaller screens */
+    margin: 0 1.3vw; /* Adjust margin for smaller screens */
+  }
+
+  .shopping-cart img {
+    width: 24px; /* Adjust width for smaller screens */
+  }
+
+  #shopNow {
+    font-size: 1rem; /* Adjust font size for smaller screens */
+    padding: 0.75rem; /* Adjust padding for smaller screens */
+  }
+
+  #about-us {
+    padding: 2rem; /* Adjust padding for smaller screens */
+  }
+
+  #about-us h2 {
+    font-size: 2rem; /* Adjust font size for smaller screens */
+  }
+
+  #about-us h3 {
+    font-size: 1.5rem; /* Adjust font size for smaller screens */
+  }
+
+  #about-us p,
+  #about-us ul li {
+    font-size: 1rem; /* Adjust font size for smaller screens */
+  }
+
+  #cookieConsent {
+    padding: 0.5rem 0; /* Adjust padding for smaller screens */
+  }
+
+  #cookieConsent p {
+    padding: 0 0.5rem; /* Adjust padding for smaller screens */
+  }
+
+  #cookieConsent button {
+    padding: 0.5rem 1rem; /* Adjust padding for smaller screens */
+  }
+
+  #footer {
+    padding: 1rem; /* Adjust padding for smaller screens */
+  }
+
+  .footer-links a {
+    font-size: 1.25rem; /* Adjust font size for smaller screens */
+  }
 }
-
-/* css for login form*/
