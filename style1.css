@@ -58,12 +58,7 @@
   #navbar {
     flex-direction: row;
 
-    align-items: flex-start;
-  }
-
-  #navbar li {
-    padding: 0.5rem 0; /* Adjust padding for smaller screens */
-    
+    align-items:center;
   }
 
   #navbar li a {
@@ -71,11 +66,7 @@
   }
 }
 
-.wrapper {
-  width: auto;
-  padding: 10vh 0; /* padding from top and bottom will be 10% of the viewport height */
-  margin: 0 auto;
-}
+
 
 /* CSS for SneakyFinds Section */
 /* Section Styling */
@@ -404,12 +395,9 @@ body {
 
 /* Media Queries for Phone Dimensions */
 @media (max-width: 600px) {
-  .wrapper-main {
-    padding: 5vh 0; /* Reduce padding for smaller screens */
-  }
-
+  
   #sneakyfinds {
-    height: 30vh; /* Adjust height for smaller screens */
+    height: 40vh; /* Adjust height for smaller screens */
   }
 
   .section-header h1 {
@@ -472,3 +460,89 @@ body {
     font-size: 1.25rem; /* Adjust font size for smaller screens */
   }
 }
+
+
+
+
+
+
+#navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+#navbar li {
+  list-style: none;
+  padding: 0 2vw;
+  position: relative;
+  white-space: nowrap;
+}
+
+#navbar li a {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+#navbar li a:hover,
+#navbar li a:active {
+  color: #d40b0b;
+}
+
+@media (max-width: 768px) {
+  #header {
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  #navbar {
+    flex-direction: row;
+    width: 100%;
+    text-align: center;
+  }
+
+  #navbar li {
+    padding: 0.5rem 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .section-header h1 {
+    font-size: 12vw;
+  }
+  
+  .section-header h3 {
+    font-size: 4vw;
+  }
+  
+  .image-banner img {
+    width: 40%;
+    margin: 0 1vw;
+  }
+  
+  .shopping-cart img {
+    width: 28px;
+  }
+  
+  #shopNow {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+  
+  #about-us {
+    padding: 1.5rem;
+  }
+  
+  #about-us h2 {
+    font-size: 2rem;
+  }
+}
+
