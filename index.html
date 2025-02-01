@@ -11,26 +11,22 @@
 <body>
   <script src="script.js"></script> <!-- Link to  JavaScript file -->
   
-  <div class="wrapper">
-    <!-- section for the top navigation ---->
-    
-<section id = "header">
-  <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px ; "></a>
-
- 
-  <div>
-    <div id="mySidebar" class="sidebar" onclick="togglePopup()">
-      <ul id="navbar">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="#about-us">About</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
-    </div>
   
     
-</div>
+<!-- section for the top navigation ---->
+<section id="header">
+  <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
+  <div id="mySidebar" class="sidebar">
+    <ul id="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="#about-us">About</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+  </div>
+
+
 <div class="shopping-cart" onclick="togglePopup()">
   <img src="cart.png" alt="Shopping Cart"> <!--cart icon or pic-->
   <span id="cartCount">0</span>
@@ -43,10 +39,8 @@
     <button id="closeButton">Close</button>
     <a href="cart.html">Checkout</a> <!-- Changed the onclick attribute to an id -->
   </div>
-  <div class="overlay" id="overlay" onclick="hidePopup()"></div>
-
+</div>
 </section>
-
 <br>
 <br>    
 
@@ -92,34 +86,38 @@
 </div>
 </section>
 
-<div id="cookieConsent">
-<div id="cookieConsentContainer">
-  <p>We use cookies to ensure you get the best experience on our website.</p>
-  <button id="acceptCookies">Accept</button>
-</div>
+<!-- Terms and Conditions Consent -->
+<div id="termsConsent">
+  <div id="termsConsentContainer">
+    <p>Accept the terms and conditions before purchasing.</p>
+    <a href="termsAndConditions.html" style="color: red;">Read our Terms and Conditions</a>
+    <button id="acceptTsAndCs">Accept</button>
+  </div>
 </div>
 
 <section id="footer">
-<div class="footer-container">
-  <div class="footer-links">
-    <a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    <a href="https://www.instagram.com/your-profile" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="mailto:sneakyfinds04@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
-    <a href="https://t.me/your-telegram" target="_blank"><i class="fab fa-telegram"></i></a>
-    
+  <div class="footer-container">
+    <div class="footer-links">
+      <a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://www.instagram.com/sneaky_finds/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="mailto:sneakyfinds04@gmail.com?subject=Inquiry%20from%20SneakyFinds%20Website" target="_blank"><i class="fas fa-envelope"></i></a> <!-- Updated link -->
+      <a href="https://t.me/your-telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+    </div>
   </div>
-</div>
 </section>
-<script src="cookieConsent.js"></script>
+<script src="termsConsent.js"></script>
+</div>
+<section id="bottom-banner">
+  <div class="bottom-banner-container">
+    <h2>Subscribe to our newsletter</h2>
+    <p>Stay updated on the latest trends, exclusive deals, and more!</p>
+    <form id="newsletterForm">
+      <input type="email" placeholder="Enter your email address" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
 
-
-
-
-
-
-
-
- </div>
+</section>
 
 
 
