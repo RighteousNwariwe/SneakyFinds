@@ -94,6 +94,53 @@
     <button id="acceptTsAndCs">Accept</button>
   </div>
 </div>
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+
+    // Simulate login and retrieve user data
+    var user = {
+      id: 'user123', // Replace with actual user ID
+      email: email
+    };
+
+    // Store user data in localStorage
+    localStorage.setItem('currentUser', JSON.stringify(user));
+
+    // Redirect to index.html or another page
+    window.location.href = 'index.html';
+  });
+</script>
+<script>
+  document.getElementById('acceptTsAndCs').addEventListener('click', function() {
+    var userId = getCurrentUserId();
+    if (userId) {
+      localStorage.setItem('termsAccepted_' + userId, 'true');
+      document.getElementById('termsConsent').style.display = 'none';
+      window.location.href = 'shop.html';
+    } else {
+      alert('User ID not found. Please log in.');
+    }
+  });
+
+  function getCurrentUserId() {
+    var user = JSON.parse(localStorage.getItem('currentUser'));
+    return user ? user.id : null;
+  }
+
+  function hasUserAcceptedTerms(userId) {
+    return localStorage.getItem('termsAccepted_' + userId) === 'true';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var userId = getCurrentUserId();
+    if (userId && hasUserAcceptedTerms(userId)) {
+      document.getElementById('termsConsent').style.display = 'none';
+    }
+  });
+</script>
 
 <section id="footer">
   <div class="footer-container">
@@ -109,6 +156,7 @@
 </div>
 <section id="bottom-banner">
   <div class="bottom-banner-container">
+    <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
     <h2>Subscribe to our newsletter</h2>
     <p>Stay updated on the latest trends, exclusive deals, and more!</p>
     <form id="newsletterForm">
