@@ -670,14 +670,13 @@ then set the desired styles for .card-img. */
   color: white;
   text-align: center;
   padding: 1rem;
-;
-  z-index: 2;
+  z-index: 1000;
 }
+
 .terms-container {
-  background-color: rgba(255, 255, 255, 0.411);
-  
+  background-color: rgba(255, 255, 255, 0.4);
   border-radius: 5px;
-  
+  padding: 1rem;
 }
 
 #termsConsentContainer {
@@ -686,6 +685,7 @@ then set the desired styles for .card-img. */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
 }
 
 #termsConsentContainer p {
@@ -693,20 +693,29 @@ then set the desired styles for .card-img. */
 }
 
 #termsConsentContainer a {
-  color: red;
+  color: #ff0000;
   text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+#termsConsentContainer a:hover {
+  color: #d40b0b;
 }
 
 #termsConsentContainer button {
-  background-color: var(--main-focus);
+  background-color: #2d8cf0;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 #termsConsentContainer button:hover {
-  background-color: var(--main-color);
+  background-color: #d40b0b;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
-.acceptTermsAndConditions
+

@@ -1,16 +1,15 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const termsConsent = document.getElementById("termsConsent");
-  const acceptButton = document.getElementById("acceptTsAndCs");
+document.addEventListener('DOMContentLoaded', function () {
+  const termsConsent = document.getElementById('termsConsent');
+  const acceptButton = document.getElementById('acceptTerms');
 
-  // Check if the user has already accepted the terms and conditions
-  if (localStorage.getItem("termsAccepted") === "true") {
-    termsConsent.style.display = "none";
+  // Check if user has already accepted terms
+  if (!localStorage.getItem('termsAccepted')) {
+    termsConsent.style.display = 'block';
   }
 
-  // Handle the accept button click event
-  acceptButton.addEventListener("click", function () {
-    localStorage.setItem("termsAccepted", "true");
-    termsConsent.style.display = "none";
+  acceptButton.addEventListener('click', function () {
+    localStorage.setItem('termsAccepted', 'true');
+    termsConsent.style.display = 'none';
   });
 });
 

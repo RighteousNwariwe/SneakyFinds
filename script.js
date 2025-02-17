@@ -69,3 +69,36 @@ function deleteCartItem(item, price) {
         hidePopup();
     }
 }
+
+// Retrieve cart from localStorage or initialize an empty cart
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Function to update cart count
+function updateCartCount() {
+    document.getElementById("cartCount").innerText = cart.length;
+}
+
+// Function to add an item to the cart
+function addToCart(event) {
+    let button = event.target;
+    let item = {
+        id: button.dataset.id,
+        name: button.dataset.name,
+        price: parseFloat(button.dataset.price)
+    };
+
+    cart.push(item);
+    localStorage.setItem("cart", JSON.stringify(cart)); // Save to localStorage
+    updateCartCount(); // Update cart icon count
+    alert(item.name + " added to cart!");
+}
+
+// Attach event listeners to all Add to Cart buttons
+document.querySelectorAll(".addCart-btn").forEach(button => {
+    button.addEventListener("click", addToCart);
+});
+
+// Update cart count on page load
+updateCartCount();
+
+
