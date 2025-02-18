@@ -1,133 +1,357 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login/Signup - SneakyFinds</title>
     <link rel="stylesheet" href="style1.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .auth-container {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            color: #d40b0b;
+            border-bottom: 2px solid #d40b0b;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #d40b0b;
+            outline: none;
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 12px;
+            background: #d40b0b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .auth-button:hover {
+            background: #a00a0a;
+        }
+
+        .social-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .social-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #ddd;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .error-message {
+            color: #d40b0b;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
   </head>
-
 <body>
-  <script src="script.js"></script> <!-- Link to  JavaScript file -->
-
-
-    
-<section id = "header">
-  <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px ; "></a>
-  
+    <section id="header">
+        <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
     <div>
       <ul id="navbar">
-        <li><a href="index.html" >Home</a></li>
-          <li><a href="shop.html" >Shop</a></li>
-          <li><a href="index.html#about-us" >About</a></li>
-          <li><a href="login.html" >Login</a></li>
-          <li> <a href="contact.html" >Contact Us</a> </li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="index.html#about-us">About</a></li>
+                <li><a href="login.html" class="active">Login</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
         </ul>
+        </div>
+    </section>
     
-      
+    <div class="auth-container">
+        <div class="auth-tabs">
+            <div class="auth-tab active" onclick="switchTab('login')">Login</div>
+            <div class="auth-tab" onclick="switchTab('signup')">Sign Up</div>
   </div>
  
-  
-  </section>
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form active">
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button type="submit" class="auth-button">Login</button>
+            <div id="loginError" class="error-message"></div>
+        </form>
 
-  <section id="section-login">
-    <div class="login-container">
-      <h1>Login</h1>
-      <form id="form" >
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" required>
-        <br>
-        <br>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" required>
-        <br>
-        <br>
-        <button type="submit">Login</button>
+        <!-- Signup Form -->
+        <form id="signupForm" class="auth-form">
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPhone">Phone Number</label>
+                <input type="tel" id="signupPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="signupLocation">Location</label>
+                <input type="text" id="signupLocation" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" required>
+            </div>
+            <div class="form-group">
+                <label for="signupConfirmPassword">Confirm Password</label>
+                <input type="password" id="signupConfirmPassword" required>
+            </div>
+            <button type="submit" class="auth-button">Sign Up</button>
+            <div id="signupError" class="error-message"></div>
+            <div id="signupSuccess" class="success-message"></div>
       </form>
+
+        <div class="social-login">
+            <a href="#" class="social-button" onclick="signInWithGoogle()">
+                <i class="fab fa-google"></i>
+            </a>
+            <a href="#" class="social-button" onclick="signInWithFacebook()">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </div>
     </div>
 
-  </section>
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
 
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYLJHGw8qRya0Y9fF7dy7pzpYjx15pPw0",
+            authDomain: "sneakyfinds-5b308.firebaseapp.com",
+            databaseURL: "https://sneakyfinds-5b308-default-rtdb.firebaseio.com",
+            projectId: "sneakyfinds-5b308",
+            storageBucket: "sneakyfinds-5b308.firebasestorage.app",
+            messagingSenderId: "228153574320",
+            appId: "1:228153574320:web:0fbc2743ab4287b0634c75",
+            measurementId: "G-NZ17V7Q1SQ"
+        };
 
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-
-
-
-
-<!-- Terms and Conditions Consent -->
-<div id="termsConsent">
-  <div id="termsConsentContainer">
-    <p>Accept the terms and conditions before purchasing.</p>
-    <a href="termsAndConditions.html" style="color: red;">Read our Terms and Conditions</a>
-    <button id="acceptTsAndCs">Accept</button>
-  </div>
-</div>
-<script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
-
-    // Simulate login and retrieve user data
-    var user = {
-      id: 'user123', // Replace with actual user ID
-      email: email
-    };
-
-    // Store user data in localStorage
-    localStorage.setItem('currentUser', JSON.stringify(user));
-
-    // Redirect to index.html or another page
-    window.location.href = 'index.html';
-  });
-</script>
-<script>
-  document.getElementById('acceptTsAndCs').addEventListener('click', function() {
-    var userId = getCurrentUserId();
-    if (userId) {
-      localStorage.setItem('termsAccepted_' + userId, 'true');
-      document.getElementById('termsConsent').style.display = 'none';
-      window.location.href = 'shop.html';
+        // Switch between login and signup tabs
+        window.switchTab = function(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            
+            if (tab === 'login') {
+                document.querySelector('.auth-tab:first-child').classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
     } else {
-      alert('User ID not found. Please log in.');
-    }
-  });
+                document.querySelector('.auth-tab:last-child').classList.add('active');
+                document.getElementById('signupForm').classList.add('active');
+            }
+        }
 
-  function getCurrentUserId() {
-    var user = JSON.parse(localStorage.getItem('currentUser'));
-    return user ? user.id : null;
-  }
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
 
-  function hasUserAcceptedTerms(userId) {
-    return localStorage.getItem('termsAccepted_' + userId) === 'true';
-  }
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                // Check for redirect URL
+                const redirectUrl = sessionStorage.getItem('redirectUrl') || 'index.html';
+                sessionStorage.removeItem('redirectUrl'); // Clear the redirect URL
+                window.location.href = redirectUrl;
+            } catch (error) {
+                document.getElementById('loginError').textContent = error.message;
+                document.getElementById('loginError').style.display = 'block';
+            }
+        });
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var userId = getCurrentUserId();
-    if (userId && hasUserAcceptedTerms(userId)) {
-      document.getElementById('termsConsent').style.display = 'none';
-    }
-  });
-</script>
+        // Handle signup form submission
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const phone = document.getElementById('signupPhone').value;
+            const location = document.getElementById('signupLocation').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
 
+            if (password !== confirmPassword) {
+                document.getElementById('signupError').textContent = 'Passwords do not match';
+                document.getElementById('signupError').style.display = 'block';
+                return;
+            }
 
+            try {
+                // Create user with email and password
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                
+                // Store additional user data in Firestore
+                await setDoc(doc(db, 'users', userCredential.user.uid), {
+                    email: email,
+                    phone: phone,
+                    location: location,
+                    createdAt: new Date().toISOString()
+                });
 
+                document.getElementById('signupSuccess').textContent = 'Account created successfully!';
+                document.getElementById('signupSuccess').style.display = 'block';
+                setTimeout(() => window.location.href = 'index.html', 2000);
+            } catch (error) {
+                document.getElementById('signupError').textContent = error.message;
+                document.getElementById('signupError').style.display = 'block';
+            }
+        });
+
+        // Google Sign In
+        window.signInWithGoogle = async function() {
+            const provider = new GoogleAuthProvider();
+            provider.setCustomParameters({
+                prompt: 'select_account'
+            });
+            
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                
+                // Store additional user data in Firestore
+                const userDoc = doc(db, 'users', user.uid);
+                await setDoc(userDoc, {
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    lastLogin: new Date().toISOString(),
+                    provider: 'google'
+                }, { merge: true });
+
+                // Check for redirect URL
+                const redirectUrl = sessionStorage.getItem('redirectUrl') || 'index.html';
+                sessionStorage.removeItem('redirectUrl');
+                window.location.href = redirectUrl;
+            } catch (error) {
+                console.error('Google Sign In Error:', error);
+                let errorMessage = 'Failed to sign in with Google. Please try again.';
+                if (error.code === 'auth/popup-blocked') {
+                    errorMessage = 'Please allow popups for this website to sign in with Google.';
+                } else if (error.code === 'auth/popup-closed-by-user') {
+                    errorMessage = 'Sign in was cancelled. Please try again.';
+                }
+                document.getElementById('loginError').textContent = errorMessage;
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        // Facebook Sign In
+        window.signInWithFacebook = async function() {
+            const provider = new FacebookAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    </script>
 
   <section id="footer">
     <div class="footer-container">
       <div class="footer-links">
-        <a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://www.instagram.com/sneaky_finds/" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="mailto:sneakyfinds04@gmail.com?subject=Inquiry%20from%20SneakyFinds%20Website" target="_blank"><i class="fas fa-envelope"></i></a> <!-- Updated link -->
-        <a href="https://t.me/your-telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+                <a href="https://wa.me/your-number" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.instagram.com/sneaky_finds/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:sneakyfinds04@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+                <a href="https://t.me/your-telegram" target="_blank" rel="noopener"><i class="fab fa-telegram"></i></a>
       </div>
     </div>
   </section>
 </body>
-
-
-
-
-
 </html>

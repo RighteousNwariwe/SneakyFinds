@@ -29,17 +29,23 @@
 
 
     <div class="shopping-cart" onclick="togglePopup()">
-      <img src="cart.png" alt="Shopping Cart"> <!--cart icon or pic-->
+      <img src="cart.png" alt="Shopping Cart">
       <span id="cartCount">0</span>
       <div id="cartPopup" class="popup" style="display: none;">
         <h4>Shopping Cart</h4>
         <ul id="cartItems">
-          <!-- Cart items will be added here -->
+          <!-- Cart items will be added here dynamically -->
         </ul>
-        <p>Total: R<span id="cartTotal">0</span></p>
-        <button id="closeButton">Close</button>
-        <a href="cart.html">Checkout</a> <!-- Changed the onclick attribute to an id -->
+        <div class="cart-total">
+          <p>Total: R<span id="cartTotal">0</span></p>
+        </div>
+        <div class="cart-buttons">
+          <button class="cart-button clear-cart" onclick="clearCart()">Clear Cart</button>
+          <button class="cart-button close-cart" onclick="hidePopup()">Close</button>
+          <a href="checkout.html" class="cart-button checkout-btn">Checkout</a>
+        </div>
       </div>
+      <div class="overlay" id="overlay" onclick="hidePopup()"></div>
     </div>
   </section>
   <br>
@@ -73,28 +79,28 @@
     <div class="about-us-container">
       <h2>About Us</h2>
       <p>Welcome to SneakyFinds, your ultimate online thrift store bringing you "Good Prices, Great Steals!"</p>
-      <p>We’re based in the heart of Vaal and Johannesburg East, proudly curating a wide selection of trendy,
+      <p>We're based in the heart of Vaal and Johannesburg East, proudly curating a wide selection of trendy,
         affordable, and high-quality pre-loved items. At SneakyFinds, we believe that thrift shopping should be fun,
         accessible, and a great way to embrace sustainability without breaking the bank.</p>
       <h3>Why Choose Us?</h3>
       <ul>
         <li><strong>Affordable Prices:</strong> Amazing deals that fit your budget.</li>
-        <li><strong>Wide Range:</strong> From vintage gems to modern essentials, we’ve got it all!</li>
+        <li><strong>Wide Range:</strong> From vintage gems to modern essentials, we've got it all!</li>
         <li><strong>Convenience:</strong> Shop from the comfort of your home and have your finds delivered to your door.
         </li>
       </ul>
       <h3>Delivery Information</h3>
-      <p>We deliver across Gauteng at an extra fee, but here’s the kicker—delivery is free for students around NWU Vaal
-        Campus and VUT! We’re all about supporting our local student community, so you can focus on hitting the books
+      <p>We deliver across Gauteng at an extra fee, but here's the kicker—delivery is free for students around NWU Vaal
+        Campus and VUT! We're all about supporting our local student community, so you can focus on hitting the books
         while we handle your thrifting needs.</p>
-      <p>Join the SneakyFinds community today and discover amazing steals that are just a click away. Let’s make thrift
+      <p>Join the SneakyFinds community today and discover amazing steals that are just a click away. Let's make thrift
         shopping stylish, affordable, and unforgettable!</p>
       <p><strong>Happy thrifting!</strong><br>The SneakyFinds Team</p>
     </div>
   </section>
 
   <!-- Terms and Conditions Consent -->
-  <div id="termsConsent" style="display: block;">
+  <div id="termsConsent" style="display: none;">
     <div id="termsConsentContainer">
       <p>Accept the terms and conditions before purchasing.</p>
       <a href="termsAndConditions.html" style="color: red;">Read our Terms and Conditions</a>
@@ -106,27 +112,17 @@
   <section id="footer">
     <div class="footer-container">
       <div class="footer-links">
-        <a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://www.instagram.com/sneaky_finds/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/your-number" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/sneaky_finds/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
         <a href="mailto:sneakyfinds04@gmail.com?subject=Inquiry%20from%20SneakyFinds%20Website" target="_blank"><i
-            class="fas fa-envelope"></i></a> <!-- Updated link -->
-        <a href="https://t.me/your-telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+            class="fas fa-envelope"></i></a>
+        <a href="https://t.me/your-telegram" target="_blank" rel="noopener"><i class="fab fa-telegram"></i></a>
       </div>
     </div>
   </section>
   <script src="termsConsent.js"></script>
   </div>
   <section id="bottom-banner">
-    <div class="bottom-banner-container">
-      <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
-      <h2>Subscribe to our newsletter</h2>
-      <p>Stay updated on the latest trends, exclusive deals, and more!</p>
-      <form id="newsletterForm">
-        <input type="email" placeholder="Enter your email address" required>
-        <button type="submit">Subscribe</button>
-      </form>
-    </div>
-
   </section>
 
 

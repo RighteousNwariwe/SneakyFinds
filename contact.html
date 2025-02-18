@@ -30,16 +30,21 @@
       
   </div>
   <div class="shopping-cart" onclick="togglePopup()">
-    <img src="cart.png" alt="Shopping Cart"> <!--cart icon or pic-->
+    <img src="cart.png" alt="Shopping Cart">
     <span id="cartCount">0</span>
     <div id="cartPopup" class="popup" style="display: none;">
       <h4>Shopping Cart</h4>
       <ul id="cartItems">
-        <!-- Cart items will be added here -->
+        <!-- Cart items will be added here dynamically -->
       </ul>
-      <p>Total: R<span id="cartTotal">0</span></p>
-      <button id="closeButton">Close</button>
-      <a href="cart.html">Checkout</a> <!-- Changed the onclick attribute to an id -->
+      <div class="cart-total">
+        <p>Total: R<span id="cartTotal">0</span></p>
+      </div>
+      <div class="cart-buttons">
+        <button class="cart-button clear-cart" onclick="clearCart()">Clear Cart</button>
+        <button class="cart-button close-cart" onclick="hidePopup()">Close</button>
+        <a href="checkout.html" class="cart-button checkout-btn">Checkout</a>
+      </div>
     </div>
     <div class="overlay" id="overlay" onclick="hidePopup()"></div>
   
@@ -48,15 +53,23 @@
   <br>
   <br>    
   
- 
+  <!-- Terms and Conditions Consent -->
+  <div id="termsConsent" style="display: none;">
+    <div id="termsConsentContainer">
+      <p>Accept the terms and conditions before purchasing.</p>
+      <a href="termsAndConditions.html" style="color: red;">Read our Terms and Conditions</a>
+      <button id="acceptTerms">Accept</button>
+    </div>
+  </div>
+  <script src="termsConsent.js"></script>
   
   <section id="footer">
     <div class="footer-container">
       <div class="footer-links">
-        <a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://www.instagram.com/sneaky_finds/" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="mailto:sneakyfinds04@gmail.com?subject=Inquiry%20from%20SneakyFinds%20Website" target="_blank"><i class="fas fa-envelope"></i></a> <!-- Updated link -->
-        <a href="https://t.me/your-telegram" target="_blank"><i class="fab fa-telegram"></i></a>
+        <a href="https://wa.me/your-number" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/sneaky_finds/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+        <a href="mailto:sneakyfinds04@gmail.com?subject=Inquiry%20from%20SneakyFinds%20Website" target="_blank"><i class="fas fa-envelope"></i></a>
+        <a href="https://t.me/your-telegram" target="_blank" rel="noopener"><i class="fab fa-telegram"></i></a>
       </div>
     </div>
   </section>
