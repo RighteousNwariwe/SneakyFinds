@@ -157,10 +157,8 @@ function handleCheckout() {
     const user = auth.currentUser;
     
     if (!user) {
-        // Save current URL for redirect after login
-        sessionStorage.setItem('redirectUrl', 'checkout.html');
-        // Redirect to login page
-        window.location.href = 'login.html';
+        // Redirect to login page and store current page
+        redirectToLogin();
         return;
     }
     
@@ -238,11 +236,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(style);
-});
-
-// Make functions available globally
+});// Make functions available globally
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.clearCart = clearCart;
 window.togglePopup = togglePopup;
 window.hidePopup = hidePopup; 
+

@@ -999,3 +999,48 @@ then set the desired styles for .card-img. */
     }
 }
 
+/* User Menu Styles */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#userDisplay {
+    font-weight: 500;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#logoutLink {
+    color: #ff4444;
+}
+
+#logoutLink:hover {
+    color: #cc0000;
+}
+
+/* Update existing navbar styles */
+#navbar li.user-menu a {
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+#navbar li.user-menu a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .user-menu {
+        flex-direction: row;
+        gap: 5px;
+    }
+    
+    #userDisplay {
+        font-size: 0.9rem;
+    }
+}
+

@@ -17,35 +17,37 @@
   <!-- section for the top navigation ---->
   <section id="header">
     <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
-    <div id="mySidebar" class="sidebar">
-      <ul id="navbar">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="#about-us">About</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
-    </div>
-
-
-    <div class="shopping-cart" onclick="togglePopup()">
-      <img src="cart.png" alt="Shopping Cart">
-      <span id="cartCount">0</span>
-      <div id="cartPopup" class="popup" style="display: none;">
-        <h4>Shopping Cart</h4>
-        <ul id="cartItems">
-          <!-- Cart items will be added here dynamically -->
+    <div>
+        <ul id="navbar">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="#about-us">About</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li class="user-menu">
+                <span id="userDisplay" style="display: none; color: white; margin-right: 10px;"></span>
+                <a href="login.html" id="loginLink">Login</a>
+                <a href="#" onclick="handleLogout()" id="logoutLink" style="display: none;">Logout</a>
+            </li>
         </ul>
-        <div class="cart-total">
-          <p>Total: R<span id="cartTotal">0</span></p>
+    </div>
+    <div class="shopping-cart" onclick="togglePopup()">
+        <img src="cart.png" alt="Shopping Cart">
+        <span id="cartCount">0</span>
+        <div id="cartPopup" class="popup" style="display: none;">
+          <h4>Shopping Cart</h4>
+          <ul id="cartItems">
+            <!-- Cart items will be added here dynamically -->
+          </ul>
+          <div class="cart-total">
+            <p>Total: R<span id="cartTotal">0</span></p>
+          </div>
+          <div class="cart-buttons">
+            <button class="cart-button clear-cart" onclick="clearCart()">Clear Cart</button>
+            <button class="cart-button close-cart" onclick="hidePopup()">Close</button>
+            <a href="checkout.html" class="cart-button checkout-btn">Checkout</a>
+          </div>
         </div>
-        <div class="cart-buttons">
-          <button class="cart-button clear-cart" onclick="clearCart()">Clear Cart</button>
-          <button class="cart-button close-cart" onclick="hidePopup()">Close</button>
-          <a href="checkout.html" class="cart-button checkout-btn">Checkout</a>
-        </div>
-      </div>
-      <div class="overlay" id="overlay" onclick="hidePopup()"></div>
+        <div class="overlay" id="overlay" onclick="hidePopup()"></div>
     </div>
   </section>
   <br>
@@ -121,6 +123,24 @@
     </div>
   </section>
   <script src="termsConsent.js"></script>
+  <script src="userState.js"></script>
+  <script>
+    // Update user display when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        updateUserDisplay();
+        const user = getCurrentUser();
+        const loginLink = document.getElementById('loginLink');
+        const logoutLink = document.getElementById('logoutLink');
+        
+        if (user) {
+            loginLink.style.display = 'none';
+            logoutLink.style.display = 'inline';
+        } else {
+            loginLink.style.display = 'inline';
+            logoutLink.style.display = 'none';
+        }
+    });
+  </script>
   </div>
   <section id="bottom-banner">
   </section>
