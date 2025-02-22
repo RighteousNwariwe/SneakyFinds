@@ -794,13 +794,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const overlay = document.getElementById('overlay');
     const closeBtn = document.querySelector('.close-cart');
 
-    // Toggle cart when clicking the cart icon
-    cartIcon.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevent event from bubbling up
-        cartPopup.style.display = cartPopup.style.display === 'block' ? 'none' : 'block';
-        overlay.style.display = cartPopup.style.display;
-    });
-
+    
     // Close cart when clicking the close button
     closeBtn.addEventListener('click', function() {
         cartPopup.style.display = 'none';
@@ -860,3 +854,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+ 

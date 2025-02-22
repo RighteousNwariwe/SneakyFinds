@@ -151,19 +151,151 @@ function togglePopup() {
 }
 
 // Function to handle checkout button click
-function handleCheckout() {
-    // Check if user is logged in
-    const auth = firebase.auth();
-    const user = auth.currentUser;
-    
-    if (!user) {
-        // Redirect to login page and store current page
-        redirectToLogin();
+async function handleCheckout(e) {
+    if (e) {
+        e.preventDefault();
+    }
+
+    // Check if cart is empty
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    if (cartItems.length === 0) {
+        showNotification('Your cart is empty!', 'error');
         return;
     }
-    
-    // If user is logged in, proceed to checkout
-    window.location.href = 'checkout.html';
+
+    // Check if user is logged in
+    const user = getCurrentUser();
+    if (!user) {
+        // Show login prompt
+        showLoginPrompt();
+        return;
+    }
+
+    // Check if terms are accepted
+    if (!hasAcceptedTerms()) {
+        showNotification('Please accept the terms and conditions before checkout', 'error');
+        document.getElementById('termsConsent').style.display = 'block';
+        return;
+    }
+
+    try {
+        // Hide cart popup
+        hidePopup();
+        
+        // Store cart items in sessionStorage for checkout page
+        sessionStorage.setItem('checkoutItems', JSON.stringify(cartItems));
+        
+        // Redirect to checkout page
+        window.location.href = 'checkout.html';
+    } catch (error) {
+        console.error('Checkout error:', error);
+        showNotification('An error occurred during checkout. Please try again.', 'error');
+    }
+}
+
+// Function to show login prompt
+function showLoginPrompt() {
+    // Create login prompt container
+    const promptContainer = document.createElement('div');
+    promptContainer.className = 'login-prompt';
+    promptContainer.innerHTML = `
+        <div class="login-prompt-content">
+            <h3>Please Log In or Sign Up</h3>
+            <p>You need to be logged in to proceed with checkout.</p>
+            <div class="login-prompt-buttons">
+                <button onclick="redirectToLogin('login')" class="login-btn">Log In</button>
+                <button onclick="redirectToLogin('signup')" class="signup-btn">Sign Up</button>
+            </div>
+            <button onclick="closeLoginPrompt()" class="close-prompt">×</button>
+        </div>
+    `;
+    document.body.appendChild(promptContainer);
+
+    // Add styles for login prompt
+    const style = document.createElement('style');
+    style.textContent += `
+        .login-prompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .login-prompt-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .login-prompt-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .login-prompt button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        
+        .login-btn {
+            background: #d40b0b;
+            color: white;
+        }
+        
+        .signup-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .close-prompt {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Function to close login prompt
+function closeLoginPrompt() {
+    const prompt = document.querySelector('.login-prompt');
+    if (prompt) {
+        prompt.remove();
+    }
+}
+
+// Function to redirect to login/signup page
+function redirectToLogin(type = 'login') {
+    // Save current page URL
+    localStorage.setItem('previousPage', window.location.href);
+    // Save cart state
+    localStorage.setItem('pendingCheckout', 'true');
+    // Redirect to login page
+    window.location.href = `login.html${type === 'signup' ? '?signup=true' : ''}`;
 }
 
 // Initialize cart when page loads
@@ -171,15 +303,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize cart UI
     updateCartUI();
     
-    // Add event listener for checkout button
-    const checkoutBtn = document.querySelector('.checkout-btn');
-    if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            handleCheckout();
-        });
-    }
+    // Add event listener for checkout buttons
+    const checkoutBtns = document.querySelectorAll('.checkout-btn');
+    checkoutBtns.forEach(btn => {
+        btn.addEventListener('click', handleCheckout);
+    });
     
+    // Add event listener for cart icon
+    const cartIcon = document.querySelector('.shopping-cart');
+    if (cartIcon) {
+        cartIcon.addEventListener('click', togglePopup);
+    }
+
     // Add event listener for clear cart button
     const clearCartBtn = document.querySelector('.clear-cart');
     if (clearCartBtn) {
@@ -190,12 +325,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeCartBtn = document.querySelector('.close-cart');
     if (closeCartBtn) {
         closeCartBtn.addEventListener('click', hidePopup);
-    }
-    
-    // Add event listener for cart icon
-    const cartIcon = document.querySelector('.shopping-cart');
-    if (cartIcon) {
-        cartIcon.addEventListener('click', togglePopup);
     }
 
     // Add styles for notification animations
@@ -236,10 +365,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(style);
-});// Make functions available globally
+});
+
+// Make functions available globally
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.clearCart = clearCart;
 window.togglePopup = togglePopup;
-window.hidePopup = hidePopup; 
+window.hidePopup = hidePopup;
+window.handleCheckout = handleCheckout;
+window.redirectToLogin = redirectToLogin;
+window.closeLoginPrompt = closeLoginPrompt; 
 
