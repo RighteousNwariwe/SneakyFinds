@@ -166,6 +166,10 @@ async function handleCheckout(e) {
     // Check if user is logged in
     const user = getCurrentUser();
     if (!user) {
+        // Store cart state and intended destination
+        localStorage.setItem('pendingCheckout', 'true');
+        localStorage.setItem('previousPage', 'checkout.html');
+        
         // Show login prompt
         showLoginPrompt();
         return;
@@ -200,7 +204,7 @@ function showLoginPrompt() {
     promptContainer.className = 'login-prompt';
     promptContainer.innerHTML = `
         <div class="login-prompt-content">
-            <h3>Please Log In or Sign Up</h3>
+            <h3>Please Log In to Continue</h3>
             <p>You need to be logged in to proceed with checkout.</p>
             <div class="login-prompt-buttons">
                 <button onclick="redirectToLogin('login')" class="login-btn">Log In</button>
@@ -211,90 +215,116 @@ function showLoginPrompt() {
     `;
     document.body.appendChild(promptContainer);
 
-    // Add styles for login prompt
-    const style = document.createElement('style');
-    style.textContent += `
-        .login-prompt {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .login-prompt-content {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            text-align: center;
-            position: relative;
-            max-width: 400px;
-            width: 90%;
-        }
-        
-        .login-prompt-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        
-        .login-prompt button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s ease;
-        }
-        
-        .login-btn {
-            background: #d40b0b;
-            color: white;
-        }
-        
-        .signup-btn {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        .close-prompt {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-        }
-    `;
-    document.head.appendChild(style);
+    // Add styles for login prompt if not already present
+    if (!document.getElementById('loginPromptStyles')) {
+        const style = document.createElement('style');
+        style.id = 'loginPromptStyles';
+        style.textContent = `
+            .login-prompt {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.3s ease-out;
+            }
+            
+            .login-prompt-content {
+                background: white;
+                padding: 30px;
+                border-radius: 8px;
+                text-align: center;
+                position: relative;
+                max-width: 400px;
+                width: 90%;
+                animation: slideDown 0.3s ease-out;
+            }
+            
+            .login-prompt-buttons {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                margin-top: 20px;
+            }
+            
+            .login-prompt button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+            
+            .login-btn {
+                background: #d40b0b;
+                color: white;
+            }
+            
+            .login-btn:hover {
+                background: #b30909;
+            }
+            
+            .signup-btn {
+                background: #4CAF50;
+                color: white;
+            }
+            
+            .signup-btn:hover {
+                background: #45a049;
+            }
+            
+            .close-prompt {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                padding: 0;
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes slideDown {
+                from { transform: translateY(-50px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 }
 
 // Function to close login prompt
 function closeLoginPrompt() {
     const prompt = document.querySelector('.login-prompt');
     if (prompt) {
-        prompt.remove();
+        prompt.style.opacity = '0';
+        setTimeout(() => {
+            prompt.remove();
+        }, 300);
     }
 }
 
 // Function to redirect to login/signup page
 function redirectToLogin(type = 'login') {
-    // Save current page URL
-    localStorage.setItem('previousPage', window.location.href);
-    // Save cart state
+    // Save current page URL and cart state
+    localStorage.setItem('previousPage', 'checkout.html');
     localStorage.setItem('pendingCheckout', 'true');
-    // Redirect to login page
+    
+    // Redirect to login page with appropriate query parameter
     window.location.href = `login.html${type === 'signup' ? '?signup=true' : ''}`;
 }
 

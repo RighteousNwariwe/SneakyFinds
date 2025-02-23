@@ -60,20 +60,47 @@ async function handleLogout() {
     try {
         // Get Firebase auth instance
         const auth = firebase.auth();
-        // Sign out from Firebase
-        await auth.signOut();
-        // Clear local storage
+        
+        // Clear all user-related data from storage
         localStorage.removeItem('currentUser');
         localStorage.removeItem('cartItems');
+        localStorage.removeItem('termsAccepted');
+        localStorage.removeItem('termsAcceptanceDetails');
+        localStorage.removeItem('pendingCheckout');
+        localStorage.removeItem('previousPage');
         sessionStorage.removeItem('checkoutItems');
+        
+        // Sign out from Firebase
+        await auth.signOut();
+        
         // Show success message
         showNotification('Successfully logged out!', 'success');
+        
         // Update display
         updateUserDisplay();
+        
+        // Clear any sensitive form data if present
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => form.reset());
+        
+        // Clear any displayed user-specific content
+        const userDisplay = document.getElementById('userDisplay');
+        if (userDisplay) userDisplay.style.display = 'none';
+        
+        // Update navigation menu
+        const loginLink = document.getElementById('loginLink');
+        const logoutLink = document.getElementById('logoutLink');
+        if (loginLink) {
+            loginLink.style.display = 'inline';
+            loginLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Login`;
+        }
+        if (logoutLink) logoutLink.style.display = 'none';
+        
         // Redirect to login page after a short delay
         setTimeout(() => {
             window.location.href = 'login.html';
         }, 1500);
+        
     } catch (error) {
         console.error('Logout error:', error);
         showNotification('Error during logout. Please try again.', 'error');
@@ -87,6 +114,45 @@ function showNotification(message, type = 'success') {
     notification.textContent = message;
     document.body.appendChild(notification);
 
+    // Add styles if not already present
+    if (!document.getElementById('notificationStyles')) {
+        const style = document.createElement('style');
+        style.id = 'notificationStyles';
+        style.textContent = `
+            .notification {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 24px;
+                border-radius: 4px;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+                color: white;
+                font-weight: 500;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+            
+            .notification.success {
+                background: #4CAF50;
+            }
+            
+            .notification.error {
+                background: #f44336;
+            }
+            
+            .notification.fade-out {
+                opacity: 0;
+                transition: opacity 0.3s ease-out;
+            }
+            
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     setTimeout(() => {
         notification.classList.add('fade-out');
         setTimeout(() => {
@@ -97,7 +163,8 @@ function showNotification(message, type = 'success') {
 
 // Function to redirect to login page
 function redirectToLogin() {
-    const currentPage = window.location.href;
+    // Store current page URL if not already on login page
+    const currentPage = window.location.pathname;
     if (!currentPage.includes('login.html')) {
         localStorage.setItem('previousPage', currentPage);
     }

@@ -24,9 +24,11 @@
             <li><a href="#about-us">About</a></li>
             <li><a href="contact.html">Contact Us</a></li>
             <li class="user-menu">
-                <span id="userDisplay" style="display: none; color: white; margin-right: 10px;"></span>
-                <a href="login.html" id="loginLink">Login</a>
-                <a href="#" onclick="handleLogout()" id="logoutLink" style="display: none;">Logout</a>
+                <span id="userDisplay" style="display: none;"></span>
+                <a href="login.html" id="loginLink"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="#" onclick="handleLogout(); return false;" id="logoutLink" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
             </li>
         </ul>
     </div>
@@ -123,22 +125,42 @@
     </div>
   </section>
   <script src="termsConsent.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js"></script>
   <script src="userState.js"></script>
   <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBYLJHGw8qRya0Y9fF7dy7pzpYjx15pPw0",
+        authDomain: "sneakyfinds-5b308.firebaseapp.com",
+        databaseURL: "https://sneakyfinds-5b308-default-rtdb.firebaseio.com",
+        projectId: "sneakyfinds-5b308",
+        storageBucket: "sneakyfinds-5b308.firebasestorage.app",
+        messagingSenderId: "228153574320",
+        appId: "1:228153574320:web:0fbc2743ab4287b0634c75",
+        measurementId: "G-NZ17V7Q1SQ"
+    };
+    firebase.initializeApp(firebaseConfig);
+
     // Update user display when page loads
     document.addEventListener('DOMContentLoaded', function() {
         updateUserDisplay();
-        const user = getCurrentUser();
-        const loginLink = document.getElementById('loginLink');
-        const logoutLink = document.getElementById('logoutLink');
         
-        if (user) {
-            loginLink.style.display = 'none';
-            logoutLink.style.display = 'inline';
-        } else {
-            loginLink.style.display = 'inline';
-            logoutLink.style.display = 'none';
-        }
+        // Check authentication state
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // User is signed in
+                document.getElementById('loginLink').style.display = 'none';
+                document.getElementById('logoutLink').style.display = 'inline';
+                document.getElementById('userDisplay').textContent = user.email.split('@')[0];
+                document.getElementById('userDisplay').style.display = 'inline';
+            } else {
+                // No user is signed in
+                document.getElementById('loginLink').style.display = 'inline';
+                document.getElementById('logoutLink').style.display = 'none';
+                document.getElementById('userDisplay').style.display = 'none';
+            }
+        });
     });
   </script>
   </div>
