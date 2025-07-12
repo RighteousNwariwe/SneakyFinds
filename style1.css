@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:200');
+
 #header {
   display: flex;
   align-items: center;
@@ -194,41 +196,62 @@
 }
 
 /* CSS for background image */
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:200');
-
 body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Video Background */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.video-background video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translateX(-50%) translateY(-50%);
+  object-fit: cover;
+}
+
+/* Fallback background for when video doesn't load */
+.video-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-image: url('https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg');
   background-size: cover;
-  -webkit-animation: slidein 100s;
-  animation: slidein 100s;
-  -webkit-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  -webkit-animation-direction: alternate;
-  animation-direction: alternate;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;
 }
 
-@-webkit-keyframes slidein {
-  from {
-    background-position: top;
-    background-size: 3000px;
-  }
-  to {
-    background-position: -100px 0px;
-    background-size: 2750px;
-  }
-}
-
-@keyframes slidein {
-  from {
-    background-position: top;
-    background-size: 3000px;
-  }
-  to {
-    background-position: -100px 0px;
-    background-size: 2750px;
-  }
+/* Overlay to make content more readable */
+.video-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: -1;
 }
 
 .center {

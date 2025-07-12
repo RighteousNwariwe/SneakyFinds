@@ -12,7 +12,13 @@
 <body>
   <script src="script.js"></script> <!-- Link to  JavaScript file -->
 
-
+  <!-- Video Background -->
+  <div class="video-background">
+    <video autoplay muted loop playsinline>
+      <source src="market-video.mp4" type="video/mp4">
+      <!-- Fallback: if video doesn't load, the CSS fallback background will show -->
+    </video>
+  </div>
 
   <!-- section for the top navigation ---->
   <section id="header">
@@ -132,7 +138,7 @@
     // Initialize Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyBYLJHGw8qRya0Y9fF7dy7pzpYjx15pPw0",
-        authDomain: "sneakyfinds-5b308.firebaseapp.com",
+        authDomain: "sneakyfinds-5b308.`  firebaseapp.com",
         databaseURL: "https://sneakyfinds-5b308-default-rtdb.firebaseio.com",
         projectId: "sneakyfinds-5b308",
         storageBucket: "sneakyfinds-5b308.firebasestorage.app",
