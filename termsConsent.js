@@ -1,3 +1,4 @@
+/*
 document.addEventListener('DOMContentLoaded', function () {
   const termsConsent = document.getElementById('termsConsent');
   const acceptButton = document.getElementById('acceptTerms') || document.getElementById('acceptTsAndCs');
