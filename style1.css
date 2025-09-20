@@ -136,70 +136,17 @@
 
 /* CSS for background image */
 body {
-<<<<<<< HEAD
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* Video Background */
-.video-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  overflow: hidden;
-}
-
-.video-background video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  transform: translateX(-50%) translateY(-50%);
-  object-fit: cover;
-}
-
-/* Fallback background for when video doesn't load */
-.video-background::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -2;
-=======
   background-image: url('abstract.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   min-height: 100vh;
->>>>>>> b9dcfe1355560b52a6dd7327ceaae7ffe1327671
-}
-
-/* Overlay to make content more readable */
-.video-background::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: -1;
+  overflow-y: scroll;
 }
 
 .center {
