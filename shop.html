@@ -1,26 +1,235 @@
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
+    <title>Shop - SneakyFinds</title>
     <link rel="stylesheet" href="style1.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Cart Popup Styles */
-        .popup {
-            position: fixed;
-            right: 20px;
-            top: 120px;
-            background: white;
+        .shop-container {
+            max-width: 1200px;
+            margin: 40px auto;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            z-index: 1001;
-            min-width: 300px;
+        }
+
+        .shop-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .shop-header h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .shop-header p {
+            color: white;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+
+        .filter-section {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+
+        .search-box input:focus {
+            border-color: #d40b0b;
+            outline: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .no-products {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Cart Popup Styles */
+        .cart-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 500px;
+            width: 90%;
             max-height: 80vh;
             overflow-y: auto;
             display: none;
+        }
+
+        .cart-popup.active {
+            display: block;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .cart-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close-cart:hover {
+            color: #d40b0b;
+        }
+
+        .cart-items {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #d40b0b;
+            font-weight: 600;
+        }
+
+        .remove-item {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .remove-item:hover {
+            background: #cc0000;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #eee;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .checkout-btn,
+        .clear-cart {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .checkout-btn:hover {
+            background: #45a049;
+        }
+
+        .clear-cart {
+            background: #ff4444;
+            color: white;
+        }
+
+        .clear-cart:hover {
+            background: #cc0000;
         }
 
         .overlay {
@@ -29,941 +238,66 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
             display: none;
         }
 
+        .overlay.active {
+            display: block;
+        }
+
+        /* Shopping Cart Icon */
         .shopping-cart {
             position: relative;
             cursor: pointer;
-            z-index: 1002;
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
         }
 
         .shopping-cart:hover {
-            transform: scale(1.1);
-            transition: transform 0.3s ease;
+            color: #d40b0b;
         }
 
-        .shopping-cart img {
-            width: 30px;
-            height: 30px;
-        }
-
-        #cartCount {
+        .cart-count {
             position: absolute;
             top: -8px;
             right: -8px;
             background: #d40b0b;
             color: white;
             border-radius: 50%;
-            padding: 2px 6px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 12px;
             font-weight: bold;
         }
 
-        .cart-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-item img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .cart-item-details {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .item-name {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .item-price {
-            color: #d40b0b;
-            font-weight: 500;
-        }
-
-        .item-quantity {
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .remove-item {
-            background: none;
-            border: none;
-            color: #ff4444;
-            cursor: pointer;
-            padding: 4px 8px;
-            transition: color 0.3s ease;
-        }
-
-        .remove-item:hover {
-            color: #cc0000;
-        }
-
-        .cart-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            gap: 10px;
-        }
-
-        .cart-button {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .clear-cart {
-            background-color: #ff4444;
-            color: white;
-        }
-
-        .clear-cart:hover {
-            background-color: #cc0000;
-        }
-
-        .close-cart {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .close-cart:hover {
-            background-color: #5a6268;
-        }
-
-        .checkout-btn {
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .checkout-btn:hover {
-            background-color: #45a049;
-        }
-
-        #cartItems {
-            list-style: none;
-            padding: 0;
-            margin: 10px 0;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        #cartItems li {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-total {
-            font-weight: bold;
-            margin: 10px 0;
-            padding: 10px 0;
-            border-top: 2px solid #eee;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.9);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 350px;
-            border: none;
-            position: relative;
-            max-width: 250px;
-            margin: 0 auto;
-            cursor: pointer;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-img {
-            width: 100%;
-            height: 160px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .card-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover .card-img img {
-            transform: scale(1.05);
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #333;
-            margin: 8px 0 4px;
-            padding: 0 12px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .card-subtitle {
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 8px;
-            padding: 0 12px;
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            height: 32px;
-        }
-
-        .card-footer {
-            margin-top: auto;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background: rgba(248, 249, 250, 0.9);
-            border-top: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .card-price {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #d40b0b;
-            text-align: center;
-        }
-
-        .addCart-btn {
-            width: 100%;
-            padding: 10px;
-            font-size: 0.9rem;
-            background: #d40b0b;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .addCart-btn:hover {
-            background: #ff0000;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 11, 11, 0.2);
-        }
-
-        .addCart-btn:active {
-            transform: translateY(0);
-        }
-
-        .addCart-btn i {
-            font-size: 1rem;
-        }
-
-        /* Quick view overlay */
-        .card-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .card:hover .card-overlay {
-            opacity: 1;
-        }
-
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .card {
-                height: 320px;
-            }
-            
-            .card-img {
-                height: 140px;
-            }
-            
-            .addCart-btn {
-                padding: 8px;
-                font-size: 0.85rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .card {
-                height: 300px;
-            }
-            
-            .card-img {
-                height: 130px;
-            }
-            
-            .card-title {
-                font-size: 0.9rem;
-            }
-            
-            .card-price {
-                font-size: 1.1rem;
-            }
-            
-            .addCart-btn {
-                padding: 6px;
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Product Grid Styles */
-        #product-grid {
-            padding: 40px 20px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-        }
-
-        .product-grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .product-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .product-image {
-            position: relative;
-            height: 300px;
-            overflow: hidden;
-        }
-
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .product-card:hover .product-image img {
-            transform: scale(1.1);
-        }
-
-        .quick-view {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .quick-view span {
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 500;
-            padding: 10px 20px;
-            border: 2px solid white;
-            border-radius: 25px;
-        }
-
-        .product-card:hover .quick-view {
-            opacity: 1;
-        }
-
-        .product-info {
-            padding: 20px;
-        }
-
-        .product-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .product-description {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.4;
-            height: 50px;
-            overflow: hidden;
-        }
-
-        .product-price {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #d40b0b;
-            margin-bottom: 15px;
-        }
-
-        .add-to-cart {
-            width: 100%;
-            padding: 12px;
-            background: #d40b0b;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .add-to-cart .cart-icon {
-            font-size: 1.1rem;
-        }
-
-        .add-to-cart .button-text {
-            transition: transform 0.3s ease;
-        }
-
-        .add-to-cart .hover-message {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            transition: top 0.3s ease;
-        }
-
-        .add-to-cart:hover {
-            background: #ff0000;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 11, 11, 0.2);
-        }
-
-        .add-to-cart:hover .button-text {
-            transform: translateY(-100%);
-        }
-
-        .add-to-cart:hover .hover-message {
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .product-grid-container {
-                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-                gap: 20px;
-                padding: 15px;
-            }
-
-            .product-image {
-                height: 220px;
-            }
-
-            .product-title {
-                font-size: 1.1rem;
-            }
-
-            .product-description {
-                font-size: 0.85rem;
-                height: 45px;
-            }
-
-            .product-price {
-                font-size: 1.2rem;
-            }
-
-            .add-to-cart {
-                padding: 10px;
-                font-size: 0.9rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .product-grid-container {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 15px;
-                padding: 10px;
-            }
-
-            .product-image {
-                height: 180px;
-            }
-
-            .product-info {
-                padding: 15px;
-            }
-
-            .product-title {
-                font-size: 1rem;
-            }
-
-            .product-price {
-                font-size: 1.1rem;
-            }
-
-            .add-to-cart {
-                padding: 8px;
-                font-size: 0.85rem;
-            }
-        }
-
-        /* Card Slider Styles */
-        .card-slider {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-
-        .card-slide-wrapper {
-            display: flex;
-            height: 100%;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .card-slide-wrapper img {
-            min-width: 100%;
-            height: 100%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .card-slide-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 10;
-            opacity: 0;
-        }
-
-        .card-slider:hover .card-slide-nav {
-            opacity: 1;
-        }
-
-        .card-slide-nav:hover {
-            background: rgba(0, 0, 0, 0.8);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .card-slide-nav.prev {
-            left: 10px;
-        }
-
-        .card-slide-nav.next {
-            right: 10px;
-        }
-
-        .card-slide-indicators {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 6px;
-            z-index: 10;
-        }
-
-        .card-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
-        }
-
-        .card-slider:hover .card-indicator {
-            opacity: 1;
-        }
-
-        .card-indicator.active {
-            background: white;
-            transform: scale(1.2);
-        }
-
-        .card-indicator:hover {
-            background: white;
-            opacity: 0.8;
-        }
-
-        /* Hide quick view overlay styles */
-        .quick-view {
-            display: none !important;
-        }
-
-        /* Large View Modal Styles */
-        .large-view-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 3000;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-        }
-
-        .large-view-modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-backdrop {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .large-view-content {
-            background: white;
-            border-radius: 20px;
-            max-width: 95vw;
-            max-height: 95vh;
-            width: 900px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
-            animation: largeModalSlideIn 0.4s ease-out;
-        }
-
-        @keyframes largeModalSlideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.7) translateY(-100px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .large-view-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 30px;
-            border-bottom: 1px solid #eee;
-            background: #f8f9fa;
-        }
-
-        .large-view-header h2 {
-            margin: 0;
-            color: #333;
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-
-        .large-view-close {
-            background: none;
-            border: none;
-            font-size: 2.5rem;
-            color: #666;
-            cursor: pointer;
-            padding: 0;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .large-view-close:hover {
-            background: #f0f0f0;
-            color: #333;
-            transform: scale(1.1);
-        }
-
-        .large-view-container {
-            position: relative;
-            height: 500px;
-            overflow: hidden;
-            background: #f8f9fa;
-        }
-
-        .large-slide-wrapper {
-            display: flex;
-            height: 100%;
-            transition: transform 0.4s ease-in-out;
-        }
-
-        .large-slide-wrapper img {
-            min-width: 100%;
-            height: 100%;
-            object-fit: contain;
-            flex-shrink: 0;
-            background: white;
-        }
-
-        .large-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .large-nav:hover {
-            background: rgba(0, 0, 0, 0.9);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .large-nav.prev {
-            left: 30px;
-        }
-
-        .large-nav.next {
-            right: 30px;
-        }
-
-        .large-view-indicators {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            padding: 25px;
-            background: #f8f9fa;
-        }
-
-        .large-indicator {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #ccc;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .large-indicator.active {
-            background: #d40b0b;
-            transform: scale(1.3);
-        }
-
-        .large-indicator:hover {
-            background: #d40b0b;
-            opacity: 0.7;
-            transform: scale(1.1);
-        }
-
-        .large-view-footer {
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #f8f9fa;
-            border-top: 1px solid #eee;
-        }
-
-        .image-counter {
-            font-size: 1.1rem;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .large-add-to-cart {
-            background: #d40b0b;
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .large-add-to-cart:hover {
-            background: #ff0000;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 11, 11, 0.4);
-        }
-
-        /* Responsive adjustments for large view */
-        @media (max-width: 768px) {
-            .large-view-content {
-                width: 98vw;
-                max-height: 98vh;
-                border-radius: 15px;
-            }
-
-            .large-view-header {
-                padding: 15px 20px;
-            }
-
-            .large-view-header h2 {
-                font-size: 1.4rem;
-            }
-
-            .large-view-container {
-                height: 400px;
-            }
-
-            .large-nav {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
-            }
-
-            .large-nav.prev {
-                left: 15px;
-            }
-
-            .large-nav.next {
-                right: 15px;
-            }
-
-            .large-view-indicators {
-                padding: 20px;
-                gap: 10px;
-            }
-
-            .large-view-footer {
+            .filter-section {
                 flex-direction: column;
-                padding: 15px 20px;
-                gap: 15px;
+                align-items: stretch;
             }
 
-            .large-add-to-cart {
+            .filter-group {
                 width: 100%;
-                justify-content: center;
-                padding: 12px 25px;
-                font-size: 1rem;
             }
 
-            .image-counter {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .large-view-container {
-                height: 350px;
+            .cart-popup {
+                width: 95%;
+                padding: 20px;
             }
 
-            .large-view-header h2 {
-                font-size: 1.2rem;
-            }
-
-            .large-nav {
-                width: 45px;
-                height: 45px;
-                font-size: 1.3rem;
-            }
-
-            .large-nav.prev {
-                left: 10px;
-            }
-
-            .large-nav.next {
-                right: 10px;
-            }
-
-            .large-view-indicators {
-                padding: 15px;
-            }
-
-            .large-indicator {
-                width: 12px;
-                height: 12px;
+            .cart-actions {
+                flex-direction: column;
             }
         }
     </style>
-  </head>
-
-  <body>
+</head>
+<body>
     <!-- Video Background -->
     <div class="video-background">
       <video autoplay muted loop playsinline>
@@ -972,700 +306,113 @@
       </video>
     </div>
 
-    <div class="wrapper">
-      <!-- section for the top navigation ---->
-      
-  <section id = "header">
-    <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px ; "></a>
-  
-    <div>
-      <ul id="navbar">
-        <li><a href="index.html" >Home</a></li>
-          <li><a href="shop.html" >Shop</a></li>
-          <li><a href="index.html#about-us">About</a></li>
-          <li><a href="login.html" >Login</a></li>
-          <li> <a href="contact.html" >Contact Us</a> </li>
-      </ul>
-    
-      
-  </div>
-  <div class="shopping-cart">
-    <img src="cart.png" alt="Shopping Cart">
-    <span id="cartCount">0</span>
-  </div>
-  <div id="cartPopup" class="popup">
-    <h4>Shopping Cart</h4>
-    <div id="cartItems">
-      <!-- Cart items will be added here dynamically -->
+    <section id="header">
+        <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html" class="active">Shop</a></li>
+                <li><a href="index.html#about-us">About</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li class="user-menu">
+                    <span id="userDisplay" style="display: none;"></span>
+                    <a href="login.html" id="loginLink"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="#" onclick="handleLogout(); return false;" id="logoutLink" style="display: none;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+                <li>
+                    <div class="shopping-cart" onclick="togglePopup()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="shop-container">
+        <div class="shop-header">
+            <h1>Shop SneakyFinds</h1>
+            <p>Discover amazing thrift finds at unbeatable prices!</p>
+        </div>
+
+        <div class="filter-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()">
+            </div>
+            <div class="filter-group">
+                <label for="categoryFilter">Category</label>
+                <select id="categoryFilter" onchange="filterProducts()">
+                    <option value="">All Categories</option>
+                    <option value="jackets">Jackets</option>
+                    <option value="shirts">Shirts</option>
+                    <option value="pants">Pants</option>
+                    <option value="accessories">Accessories</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="priceFilter">Max Price</label>
+                <input type="number" id="priceFilter" placeholder="Max price" onchange="filterProducts()">
+            </div>
+            <div class="filter-group">
+                <label for="sortFilter">Sort By</label>
+                <select id="sortFilter" onchange="filterProducts()">
+                    <option value="">Default</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name">Name A-Z</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="loadingMessage" class="loading">Loading products...</div>
+        <div id="noProductsMessage" class="no-products" style="display: none;">No products found matching your criteria.</div>
+        
+        <div class="product-grid-container" id="productGrid">
+            <!-- Products will be loaded here -->
+        </div>
     </div>
-    <div class="cart-total">
-      <p>Total: R<span id="cartTotal">0</span></p>
+
+    <!-- Cart Popup -->
+    <div class="overlay" id="overlay" onclick="hidePopup()"></div>
+    <div class="cart-popup" id="cartPopup">
+        <div class="cart-header">
+            <h2>Shopping Cart</h2>
+            <button class="close-cart" onclick="hidePopup()">&times;</button>
+        </div>
+        <div class="cart-items">
+            <ul id="cartItems">
+                <!-- Cart items will be displayed here -->
+            </ul>
+        </div>
+        <div class="cart-total">
+            Total: R<span id="cartTotal">0.00</span>
+        </div>
+        <div class="cart-actions">
+            <button class="checkout-btn" onclick="handleCheckout()">Checkout</button>
+            <button class="clear-cart" onclick="clearCart()">Clear Cart</button>
+        </div>
     </div>
-    <div class="cart-buttons">
-      <button class="cart-button clear-cart" onclick="clearCart()">Clear Cart</button>
-      <button class="cart-button close-cart" >Close</button>
-      <a href="checkout.html" class="cart-button checkout-btn" onclick="handleCheckout()">Checkout</a>
-    </div>
-  </div>
-  <div class="overlay" id="overlay"></div>
-  
-  </section>
 
+    <!-- Footer Section -->
+    <section id="footer">
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="https://wa.me/your-number" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.instagram.com/sneaky_finds/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:sneakyfinds04@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+                <a href="https://t.me/your-telegram" target="_blank" rel="noopener"><i class="fab fa-telegram"></i></a>
+            </div>
+        </div>
+    </section>
 
-  </section>
-  
- <!-- Terms and Conditions Consent -->
-<div id="termsConsent" style="display: none;">
-  <div id="termsConsentContainer">
-    <p>Accept the terms and conditions before purchasing.</p>
-    <a href="termsAndConditions.html" style="color: red;">Read our Terms and Conditions</a>
-    <button id="acceptTerms">Accept</button>
-  </div>
-</div>
-<script src="termsConsent.js"></script>
-<script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
-
-    // Simulate login and retrieve user data
-    var user = {
-      id: 'user123', // Replace with actual user ID
-      email: email
-    };
-
-    // Store user data in localStorage
-    localStorage.setItem('currentUser', JSON.stringify(user));
-
-    // Redirect to index.html or another page
-    window.location.href = 'index.html';
-  });
-</script>
-<script>
-  document.getElementById('acceptTerms').addEventListener('click', function() {
-    var userId = getCurrentUserId();
-    if (userId) {
-      localStorage.setItem('termsAccepted_' + userId, 'true');
-      document.getElementById('termsConsent').style.display = 'none';
-      window.location.href = 'shop.html';
-    } else {
-      alert('User ID not found. Please log in.');
-    }
-  });
-
-  function getCurrentUserId() {
-    var user = JSON.parse(localStorage.getItem('currentUser'));
-    return user ? user.id : null;
-  }
-
-  function hasUserAcceptedTerms(userId) {
-    return localStorage.getItem('termsAccepted_' + userId) === 'true';
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var userId = getCurrentUserId();
-    if (userId && hasUserAcceptedTerms(userId)) {
-      document.getElementById('termsConsent').style.display = 'none';
-    }
-  });
-</script>
-
-  <!-- Firebase and cart scripts -->
-  <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js" type="module"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js" type="module"></script>
-  <script src="cart.js"></script>
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js"></script>
+    <script src="userState.js"></script>
+    <script src="cart.js"></script>
+    <script src="shop.js" type="module"></script>
+</body>
 </html>
-
-<!-- Add Firebase scripts -->
-<script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js" type="module"></script>
-<script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js" type="module"></script>
-<script src="cart.js"></script>
-
-
-
-
-
-<!-- Section for the product grid -->  
-<section id="product-grid">
-  <div class="product-grid-container">
-    <!-- Product Card 1 -->
-    <div class="product-card">
-      <div class="product-image">
-        <div class="card-slider" id="jako-red-jacket-slider" onclick="openLargeView('jako-red-jacket')">
-          <div class="card-slide-wrapper">
-            <img src="Stock/Red Jacket 1.jpeg" alt="Jako Red Jacket - Image 1">
-            <img src="Stock/Red Jacket 2.jpeg" alt="Jako Red Jacket - Image 2">
-            <img src="Stock/Red Jacket 3.jpeg" alt="Jako Red Jacket - Image 3">
-            <img src="Stock/Red Jacket 4.jpeg" alt="Jako Red Jacket - Image 4">
-            <img src="Stock/Red Jacket 5.jpeg" alt="Jako Red Jacket - Image 5">
-          </div>
-          <button class="card-slide-nav prev" onclick="event.stopPropagation(); changeCardSlide('jako-red-jacket-slider', -1)">&#8249;</button>
-          <button class="card-slide-nav next" onclick="event.stopPropagation(); changeCardSlide('jako-red-jacket-slider', 1)">&#8250;</button>
-          <div class="card-slide-indicators">
-            <span class="card-indicator active" onclick="event.stopPropagation(); goToCardSlide('jako-red-jacket-slider', 0)"></span>
-            <span class="card-indicator" onclick="event.stopPropagation(); goToCardSlide('jako-red-jacket-slider', 1)"></span>
-            <span class="card-indicator" onclick="event.stopPropagation(); goToCardSlide('jako-red-jacket-slider', 2)"></span>
-            <span class="card-indicator" onclick="event.stopPropagation(); goToCardSlide('jako-red-jacket-slider', 3)"></span>
-            <span class="card-indicator" onclick="event.stopPropagation(); goToCardSlide('jako-red-jacket-slider', 4)"></span>
-          </div>
-        </div>
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">Jako Red Jacket</h3>
-        <p class="product-description">Premium Jako red athletic jacket with black accents. Perfect for sports and casual wear. High-quality material and modern design.</p>
-        <div class="product-price">R599.99</div>
-        <button class="add-to-cart" onclick="addToCart('Jako Red Jacket', 599.99, 'Stock/Red Jacket 1.jpeg')">
-          <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
-          <span class="button-text">Add to Cart</span>
-          <span class="hover-message">Click to Add</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Product Card 2 -->
-    <div class="product-card">
-      <div class="product-image">
-        <img src="football shirts.jpg" alt="Football Shirt">
-        <div class="quick-view">
-          <span>Quick View</span>
-        </div>
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">Retro Football Jersey</h3>
-        <p class="product-description">Authentic retro football jersey. Perfect for fans and collectors.</p>
-        <div class="product-price">R299.99</div>
-        <button class="add-to-cart" onclick="addToCart('Retro Football Jersey', 299.99, 'football shirts.jpg')">
-          <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
-          <span class="button-text">Add to Cart</span>
-          <span class="hover-message">Click to Add</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Product Card 3 -->
-    <div class="product-card">
-      <div class="product-image">
-        <img src="pants.jpg" alt="Vintage Pants">
-        <div class="quick-view">
-          <span>Quick View</span>
-        </div>
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">Classic Vintage Pants</h3>
-        <p class="product-description">High-quality vintage pants with perfect fit and style.</p>
-        <div class="product-price">R349.99</div>
-        <button class="add-to-cart" onclick="addToCart('Classic Vintage Pants', 349.99, 'pants.jpg')">
-          <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
-          <span class="button-text">Add to Cart</span>
-          <span class="hover-message">Click to Add</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Product Card 4 -->
-    <div class="product-card">
-      <div class="product-image">
-        <img src="old money fits.jpg" alt="Old Money Outfit">
-        <div class="quick-view">
-          <span>Quick View</span>
-        </div>
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">Old Money Ensemble</h3>
-        <p class="product-description">Complete vintage outfit with sophisticated old money aesthetic.</p>
-        <div class="product-price">R899.99</div>
-        <button class="add-to-cart" onclick="addToCart('Old Money Ensemble', 899.99, 'old money fits.jpg')">
-          <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
-          <span class="button-text">Add to Cart</span>
-          <span class="hover-message">Click to Add</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Product Card 5 -->
-    <div class="product-card">
-      <div class="product-image">
-        <img src="shirts .jpg" alt="Vintage Shirt">
-        <div class="quick-view">
-          <span>Quick View</span>
-        </div>
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">Classic Vintage Shirt</h3>
-        <p class="product-description">Timeless vintage shirt with unique patterns and excellent quality.</p>
-        <div class="product-price">R249.99</div>
-        <button class="add-to-cart" onclick="addToCart('Classic Vintage Shirt', 249.99, 'shirts .jpg')">
-          <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
-          <span class="button-text">Add to Cart</span>
-          <span class="hover-message">Click to Add</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const cartIcon = document.querySelector('.shopping-cart');
-    const cartPopup = document.getElementById('cartPopup');
-    const overlay = document.getElementById('overlay');
-    const closeBtn = document.querySelector('.close-cart');
-
-    
-    // Close cart when clicking the close button
-    closeBtn.addEventListener('click', function() {
-        cartPopup.style.display = 'none';
-        overlay.style.display = 'none';
-    });
-
-    // Close cart when clicking the overlay
-    overlay.addEventListener('click', function() {
-        cartPopup.style.display = 'none';
-        overlay.style.display = 'none';
-    });
-
-    // Prevent cart from closing when clicking inside it
-    cartPopup.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-
-    // Close cart when clicking outside
-    document.addEventListener('click', function(e) {
-        if (cartPopup.style.display === 'block' && 
-            !cartPopup.contains(e.target) && 
-            !cartIcon.contains(e.target)) {
-            cartPopup.style.display = 'none';
-            overlay.style.display = 'none';
-        }
-    });
-});
-</script>
-
-
-
-
-
-  <!-- Section for the footer -->
-  <section id="footer">
-    <div class="footer-container">
-      <div class="footer-links">
-        <a href="https://wa.me/your-number" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://www.instagram.com/sneaky_finds/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-        <a href="mailto:sneakyfinds04@gmail.com?subject=Inquiry%20from%20SneakyFinds%20Website" target="_blank"><i class="fas fa-envelope"></i></a>
-        <a href="https://t.me/your-telegram" target="_blank" rel="noopener"><i class="fab fa-telegram"></i></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Large View Modal -->
-  <div id="largeViewModal" class="large-view-modal">
-    <div class="modal-backdrop" onclick="closeLargeView()"></div>
-    <div class="large-view-content">
-      <div class="large-view-header">
-        <h2 id="largeViewTitle">Jako Red Jacket</h2>
-        <button class="large-view-close" onclick="closeLargeView()">&times;</button>
-      </div>
-      <div class="large-view-container">
-        <button class="large-nav prev" onclick="changeLargeSlide(-1)">&#8249;</button>
-        <div class="large-slide-wrapper" id="largeSlideWrapper">
-          <!-- Images will be dynamically loaded here -->
-        </div>
-        <button class="large-nav next" onclick="changeLargeSlide(1)">&#8250;</button>
-      </div>
-      <div class="large-view-indicators" id="largeViewIndicators">
-        <!-- Indicators will be dynamically generated here -->
-      </div>
-      <div class="large-view-footer">
-        <div class="image-counter">
-          <span id="currentImageNum">1</span> / <span id="totalImages">5</span>
-        </div>
-        <button class="large-add-to-cart" onclick="addToCartFromLargeView()">
-          <i class="fas fa-shopping-cart"></i> Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
-
-    <script src="cookieConsent.js"></script>
-
-    <!-- Card Slider JavaScript -->
-    <script>
-        // Store slide positions for each card slider
-        const cardSlidePositions = {};
-
-        // Initialize card sliders on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeCardSliders();
-        });
-
-        // Initialize all card sliders
-        function initializeCardSliders() {
-            const sliders = document.querySelectorAll('.card-slider');
-            sliders.forEach(slider => {
-                const sliderId = slider.id;
-                if (sliderId) {
-                    cardSlidePositions[sliderId] = 0;
-                }
-            });
-        }
-
-        // Change slide for a specific card slider
-        function changeCardSlide(sliderId, direction) {
-            const slider = document.getElementById(sliderId);
-            if (!slider) return;
-
-            const slideWrapper = slider.querySelector('.card-slide-wrapper');
-            const indicators = slider.querySelectorAll('.card-indicator');
-            const images = slideWrapper.querySelectorAll('img');
-            
-            if (!slideWrapper || !images.length) return;
-
-            // Initialize position if not set
-            if (cardSlidePositions[sliderId] === undefined) {
-                cardSlidePositions[sliderId] = 0;
-            }
-
-            // Update position
-            cardSlidePositions[sliderId] += direction;
-
-            // Handle wrapping
-            if (cardSlidePositions[sliderId] >= images.length) {
-                cardSlidePositions[sliderId] = 0;
-            } else if (cardSlidePositions[sliderId] < 0) {
-                cardSlidePositions[sliderId] = images.length - 1;
-            }
-
-            // Update slide position
-            slideWrapper.style.transform = `translateX(-${cardSlidePositions[sliderId] * 100}%)`;
-
-            // Update indicators
-            indicators.forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === cardSlidePositions[sliderId]);
-            });
-        }
-
-        // Go to specific slide for a card slider
-        function goToCardSlide(sliderId, index) {
-            const slider = document.getElementById(sliderId);
-            if (!slider) return;
-
-            const slideWrapper = slider.querySelector('.card-slide-wrapper');
-            const indicators = slider.querySelectorAll('.card-indicator');
-            const images = slideWrapper.querySelectorAll('img');
-            
-            if (!slideWrapper || !images.length || index < 0 || index >= images.length) return;
-
-            // Set position
-            cardSlidePositions[sliderId] = index;
-
-            // Update slide position
-            slideWrapper.style.transform = `translateX(-${cardSlidePositions[sliderId] * 100}%)`;
-
-            // Update indicators
-            indicators.forEach((indicator, ind) => {
-                indicator.classList.toggle('active', ind === cardSlidePositions[sliderId]);
-            });
-        }
-
-        // Touch/swipe support for mobile
-        function addTouchSupport() {
-            const sliders = document.querySelectorAll('.card-slider');
-            
-            sliders.forEach(slider => {
-                let startX = 0;
-                let endX = 0;
-                
-                slider.addEventListener('touchstart', function(e) {
-                    startX = e.touches[0].clientX;
-                });
-                
-                slider.addEventListener('touchend', function(e) {
-                    endX = e.changedTouches[0].clientX;
-                    handleSwipe(slider, startX, endX);
-                });
-            });
-        }
-
-        // Handle swipe gestures
-        function handleSwipe(slider, startX, endX) {
-            const threshold = 50; // Minimum swipe distance
-            const diff = startX - endX;
-            
-            if (Math.abs(diff) > threshold) {
-                if (diff > 0) {
-                    // Swipe left - next slide
-                    changeCardSlide(slider.id, 1);
-                } else {
-                    // Swipe right - previous slide
-                    changeCardSlide(slider.id, -1);
-                }
-            }
-        }
-
-        // Initialize touch support
-        document.addEventListener('DOMContentLoaded', function() {
-            addTouchSupport();
-        });
-
-        // Auto-advance slides (optional)
-        function startAutoAdvance(sliderId, interval = 4000) {
-            const slider = document.getElementById(sliderId);
-            if (!slider) return;
-
-            // Clear any existing interval
-            if (slider.autoAdvanceInterval) {
-                clearInterval(slider.autoAdvanceInterval);
-            }
-
-            // Start new interval
-            slider.autoAdvanceInterval = setInterval(() => {
-                changeCardSlide(sliderId, 1);
-            }, interval);
-
-            // Pause on hover
-            slider.addEventListener('mouseenter', () => {
-                if (slider.autoAdvanceInterval) {
-                    clearInterval(slider.autoAdvanceInterval);
-                }
-            });
-
-            // Resume when mouse leaves
-            slider.addEventListener('mouseleave', () => {
-                startAutoAdvance(sliderId, interval);
-            });
-        }
-
-        // Stop auto-advance
-        function stopAutoAdvance(sliderId) {
-            const slider = document.getElementById(sliderId);
-            if (slider && slider.autoAdvanceInterval) {
-                clearInterval(slider.autoAdvanceInterval);
-                slider.autoAdvanceInterval = null;
-            }
-        }
-
-        // Uncomment the line below to enable auto-advance for the Jako Red Jacket
-        // startAutoAdvance('jako-red-jacket-slider');
-
-        // Large View Modal Functions
-        const largeViewData = {
-            'jako-red-jacket': {
-                title: 'Jako Red Jacket',
-                price: 'R599.99',
-                description: 'Premium Jako red athletic jacket with black accents. Perfect for sports and casual wear. High-quality material and modern design.',
-                images: [
-                    'Stock/Red Jacket 1.jpeg',
-                    'Stock/Red Jacket 2.jpeg',
-                    'Stock/Red Jacket 3.jpeg',
-                    'Stock/Red Jacket 4.jpeg',
-                    'Stock/Red Jacket 5.jpeg'
-                ]
-            }
-        };
-
-        let largeViewCurrentSlide = 0;
-        let largeViewCurrentProduct = null;
-
-        // Open large view modal
-        function openLargeView(productId) {
-            largeViewCurrentProduct = largeViewData[productId];
-            if (!largeViewCurrentProduct) return;
-
-            const modal = document.getElementById('largeViewModal');
-            const modalTitle = document.getElementById('largeViewTitle');
-            const slideWrapper = document.getElementById('largeSlideWrapper');
-            const indicatorsContainer = document.getElementById('largeViewIndicators');
-            const currentImageNum = document.getElementById('currentImageNum');
-            const totalImages = document.getElementById('totalImages');
-
-            // Set product details
-            modalTitle.textContent = largeViewCurrentProduct.title;
-            totalImages.textContent = largeViewCurrentProduct.images.length;
-
-            // Clear and populate images
-            slideWrapper.innerHTML = '';
-            indicatorsContainer.innerHTML = '';
-
-            largeViewCurrentProduct.images.forEach((imageSrc, index) => {
-                // Create image element
-                const img = document.createElement('img');
-                img.src = imageSrc;
-                img.alt = `${largeViewCurrentProduct.title} - Image ${index + 1}`;
-                img.loading = 'lazy';
-                slideWrapper.appendChild(img);
-
-                // Create indicator
-                const indicator = document.createElement('div');
-                indicator.className = 'large-indicator';
-                if (index === 0) indicator.classList.add('active');
-                indicator.onclick = () => goToLargeSlide(index);
-                indicatorsContainer.appendChild(indicator);
-            });
-
-            // Set initial slide from card position
-            const cardSliderId = productId + '-slider';
-            largeViewCurrentSlide = cardSlidePositions[cardSliderId] || 0;
-            updateLargeSlidePosition();
-
-            // Show modal
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // Add keyboard navigation
-            document.addEventListener('keydown', handleLargeViewKeydown);
-        }
-
-        // Close large view modal
-        function closeLargeView() {
-            const modal = document.getElementById('largeViewModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            document.removeEventListener('keydown', handleLargeViewKeydown);
-        }
-
-        // Change slide in large view (direction: -1 for previous, 1 for next)
-        function changeLargeSlide(direction) {
-            if (!largeViewCurrentProduct) return;
-
-            largeViewCurrentSlide += direction;
-
-            // Handle wrapping
-            if (largeViewCurrentSlide >= largeViewCurrentProduct.images.length) {
-                largeViewCurrentSlide = 0;
-            } else if (largeViewCurrentSlide < 0) {
-                largeViewCurrentSlide = largeViewCurrentProduct.images.length - 1;
-            }
-
-            updateLargeSlidePosition();
-        }
-
-        // Go to specific slide in large view
-        function goToLargeSlide(index) {
-            if (!largeViewCurrentProduct || index < 0 || index >= largeViewCurrentProduct.images.length) return;
-            
-            largeViewCurrentSlide = index;
-            updateLargeSlidePosition();
-        }
-
-        // Update large view slide position and indicators
-        function updateLargeSlidePosition() {
-            const slideWrapper = document.getElementById('largeSlideWrapper');
-            const indicators = document.querySelectorAll('.large-indicator');
-            const currentImageNum = document.getElementById('currentImageNum');
-
-            if (slideWrapper) {
-                slideWrapper.style.transform = `translateX(-${largeViewCurrentSlide * 100}%)`;
-            }
-
-            // Update indicators
-            indicators.forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === largeViewCurrentSlide);
-            });
-
-            // Update image counter
-            if (currentImageNum) {
-                currentImageNum.textContent = largeViewCurrentSlide + 1;
-            }
-        }
-
-        // Handle keyboard navigation for large view
-        function handleLargeViewKeydown(event) {
-            if (!largeViewCurrentProduct) return;
-
-            switch (event.key) {
-                case 'ArrowLeft':
-                    event.preventDefault();
-                    changeLargeSlide(-1);
-                    break;
-                case 'ArrowRight':
-                    event.preventDefault();
-                    changeLargeSlide(1);
-                    break;
-                case 'Escape':
-                    event.preventDefault();
-                    closeLargeView();
-                    break;
-            }
-        }
-
-        // Add to cart from large view
-        function addToCartFromLargeView() {
-            if (!largeViewCurrentProduct) return;
-            
-            // Use the existing addToCart function
-            addToCart(largeViewCurrentProduct.title, parseFloat(largeViewCurrentProduct.price.replace('R', '').replace(',', '')), largeViewCurrentProduct.images[largeViewCurrentSlide]);
-            
-            // Show success message
-            const button = document.querySelector('.large-add-to-cart');
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Added!';
-            button.style.background = '#4CAF50';
-            
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.style.background = '#d40b0b';
-            }, 2000);
-            
-            // Close modal after adding to cart
-            setTimeout(() => {
-                closeLargeView();
-            }, 1500);
-        }
-
-        // Touch/swipe support for large view
-        function addLargeViewTouchSupport() {
-            const modal = document.getElementById('largeViewModal');
-            const slideWrapper = document.getElementById('largeSlideWrapper');
-            
-            if (!modal || !slideWrapper) return;
-
-            let startX = 0;
-            let endX = 0;
-            
-            slideWrapper.addEventListener('touchstart', function(e) {
-                startX = e.touches[0].clientX;
-            });
-            
-            slideWrapper.addEventListener('touchend', function(e) {
-                endX = e.changedTouches[0].clientX;
-                handleLargeViewSwipe(startX, endX);
-            });
-        }
-
-        // Handle swipe gestures for large view
-        function handleLargeViewSwipe(startX, endX) {
-            const threshold = 50; // Minimum swipe distance
-            const diff = startX - endX;
-            
-            if (Math.abs(diff) > threshold) {
-                if (diff > 0) {
-                    // Swipe left - next slide
-                    changeLargeSlide(1);
-                } else {
-                    // Swipe right - previous slide
-                    changeLargeSlide(-1);
-                }
-            }
-        }
-
-        // Initialize large view touch support
-        document.addEventListener('DOMContentLoaded', function() {
-            addLargeViewTouchSupport();
-        });
-    </script>
-    
-  
-
-      </div>
-  
-  
-  
-  </body>
-
-
-
-
-
-
- 
