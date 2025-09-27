@@ -180,6 +180,12 @@ function getRedirectUrl() {
 
 // Initialize auth state observer
 document.addEventListener('DOMContentLoaded', function () {
+    // Check if Firebase is available
+    if (typeof firebase === 'undefined') {
+        console.warn('Firebase not loaded, user state management disabled');
+        return;
+    }
+    
     // Add notification styles
     const style = document.createElement('style');
     style.textContent = `
@@ -216,9 +222,15 @@ document.addEventListener('DOMContentLoaded', function () {
     document.head.appendChild(style);
 
     // Initialize Firebase auth
-    const auth = firebase.auth();
-    auth.onAuthStateChanged((user) => {
-        setCurrentUser(user);
+    try {
+        const auth = firebase.auth();
+        auth.onAuthStateChanged((user) => {
+            setCurrentUser(user);
+            updateUserDisplay();
+        });
+    } catch (error) {
+        console.error('Error initializing Firebase auth:', error);
+        // Fallback to localStorage user state
         updateUserDisplay();
-    });
+    }
 }); 
