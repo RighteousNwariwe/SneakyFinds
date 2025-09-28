@@ -243,6 +243,14 @@
     </style>
   </head>
 <body>
+    <!-- Video Background -->
+    <div class="video-background">
+      <video autoplay muted loop playsinline>
+        <source src="market-video.mp4" type="video/mp4">
+        <!-- Fallback: if video doesn't load, the CSS fallback background will show -->
+      </video>
+    </div>
+
     <section id="header">
         <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
     <div>
@@ -319,7 +327,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, sendPasswordResetEmail, verifyPasswordResetCode, confirmPasswordReset } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -367,6 +375,16 @@
                 loginError.style.display = 'none';
 
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                
+                // Check if email is verified
+                if (!userCredential.user.emailVerified) {
+                    await auth.signOut();
+                    loginError.textContent = 'Please verify your email before logging in. Check your inbox for the verification link.';
+                    loginError.style.display = 'block';
+                    loginError.style.color = '#d40b0b';
+                    loginError.style.background = 'rgba(212, 11, 11, 0.1)';
+                    return;
+                }
                 
                 // Store user data in Firestore with last login
                 await setDoc(doc(db, 'users', userCredential.user.uid), {
@@ -425,26 +443,33 @@
                 // Create user with email and password
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 
+                // Send email verification
+                await userCredential.user.sendEmailVerification();
+                
                 // Store additional user data in Firestore
                 await setDoc(doc(db, 'users', userCredential.user.uid), {
                     email: email,
                     phone: phone,
                     location: location,
                     createdAt: new Date().toISOString(),
-                    lastLogin: new Date().toISOString()
+                    lastLogin: new Date().toISOString(),
+                    emailVerified: false
                 });
 
-                // Set current user
-                setCurrentUser(userCredential.user);
+                // Don't set current user until email is verified
+                await auth.signOut();
 
                 // Show success message
-                signupSuccess.textContent = 'Account created successfully!';
+                signupSuccess.textContent = 'Account created successfully! Please check your email and click the verification link before logging in.';
                 signupSuccess.style.display = 'block';
-
-                // Redirect after a short delay
+                
+                // Clear the form
+                document.getElementById('signupForm').reset();
+                
+                // Switch to login tab after showing message
                 setTimeout(() => {
-                    window.location.href = getRedirectUrl();
-                }, 2000);
+                    switchTab('login');
+                }, 3000);
             } catch (error) {
                 signupError.textContent = getAuthErrorMessage(error.code);
                 signupError.style.display = 'block';
@@ -525,10 +550,79 @@
                     return 'This operation is not allowed. Please contact support.';
                 case 'auth/popup-closed-by-user':
                     return 'Sign in was cancelled. Please try again.';
+                case 'auth/email-not-verified':
+                    return 'Please verify your email before logging in.';
                 default:
                     return 'An error occurred. Please try again.';
             }
         }
+        
+        // Function to handle password reset
+        window.handlePasswordReset = async function(email) {
+            try {
+                if (!email) {
+                    throw new Error('Please enter your email address.');
+                }
+                
+                await sendPasswordResetEmail(auth, email);
+                showNotification('Password reset email sent! Please check your inbox.', 'success');
+                
+                // Hide the modal
+                const modal = document.getElementById('resetPasswordModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Password reset error:', error);
+                showNotification(error.message || 'Error sending password reset email.', 'error');
+            }
+        }
+        
+        // Function to show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Add styles if not already present
+            if (!document.getElementById('notificationStyles')) {
+                const style = document.createElement('style');
+                style.id = 'notificationStyles';
+                style.textContent = `
+                    .notification {
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        padding: 12px 24px;
+                        border-radius: 4px;
+                        z-index: 1000;
+                        animation: slideIn 0.3s ease-out;
+                        color: white;
+                        font-weight: 500;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                    }
+                    
+                    .notification.success {
+                        background: #4CAF50;
+                    }
+                    
+                    .notification.error {
+                        background: #f44336;
+                    }
+                    
+                    .notification.fade-out {
+                        opacity: 0;
+                        transition: opacity 0.3s ease-out;
+                    }
+                    
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
     </script>
 
     <!-- Add this after the Firebase SDK script -->

@@ -21,7 +21,8 @@ const functions = getFunctions(app);
 // Function to send order confirmation email
 export async function sendOrderConfirmationEmail(orderData) {
     try {
-        const sendEmail = httpsCallable(functions, 'sendOrderConfirmationEmail');
+        // For demo purposes, we'll simulate email sending
+        // In production, you would use Firebase Functions or another email service
         const emailData = {
             to: orderData.email,
             subject: 'Order Confirmation - SneakyFinds',
@@ -36,8 +37,13 @@ export async function sendOrderConfirmationEmail(orderData) {
             }
         };
         
-        const result = await sendEmail(emailData);
-        console.log('Email sent successfully:', result);
+        // Simulate email sending
+        console.log('Email would be sent:', emailData);
+        
+        // In a real application, you would call your email service here
+        // const sendEmail = httpsCallable(functions, 'sendOrderConfirmationEmail');
+        // const result = await sendEmail(emailData);
+        
         return true;
     } catch (error) {
         console.error('Error sending confirmation email:', error);
@@ -48,7 +54,7 @@ export async function sendOrderConfirmationEmail(orderData) {
 // Function to send order status update email
 export async function sendOrderStatusEmail(orderData, newStatus) {
     try {
-        const sendEmail = httpsCallable(functions, 'sendOrderStatusEmail');
+        // For demo purposes, we'll simulate email sending
         const emailData = {
             to: orderData.email,
             subject: `Order Status Update - ${newStatus.toUpperCase()}`,
@@ -63,8 +69,8 @@ export async function sendOrderStatusEmail(orderData, newStatus) {
             }
         };
         
-        const result = await sendEmail(emailData);
-        console.log('Status update email sent successfully:', result);
+        // Simulate email sending
+        console.log('Status update email would be sent:', emailData);
         return true;
     } catch (error) {
         console.error('Error sending status update email:', error);
