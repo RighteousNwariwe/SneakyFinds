@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="style1.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+      .contact-section {
+        padding: 80px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .contact-title {
+        text-align: center;
+        margin-bottom: 50px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s forwards;
+      }
+
+      .contact-title h2 {
+        font-size: 2.5em;
+        color: #d40b0b;
+        margin-bottom: 15px;
+      }
+
+      .contact-title p {
+        color: #666;
+        font-size: 1.1em;
+      }
+
+      .contact-cards {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
+
+      .contact-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        width: 300px;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.8s forwards;
+      }
+
+      .contact-card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .contact-card:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      .contact-card:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+
+      .contact-icon {
+        width: 80px;
+        height: 80px;
+        background: #d40b0b;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        transition: transform 0.3s ease;
+      }
+
+      .contact-card:hover .contact-icon {
+        transform: scale(1.1) rotate(5deg);
+      }
+
+      .contact-icon i {
+        font-size: 35px;
+        color: white;
+      }
+
+      .contact-info h3 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 1.3em;
+      }
+
+      .contact-info p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+
+      .contact-link {
+        color: #d40b0b;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        position: relative;
+      }
+
+      .contact-link::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: #d40b0b;
+        bottom: -2px;
+        left: 0;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+      }
+
+      .contact-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .contact-card {
+          width: 100%;
+          max-width: 300px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="script.js"></script>
+    
+    <div class="wrapper">
+      <section id="header">
+        <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
+        <div>
+          <ul id="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="index.html#about-us">About</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="contact.html" class="active">Contact Us</a></li>
+          </ul>
+        </div>
+       
+      </section>
+
+      <section class="contact-section">
+        <div class="contact-title">
+          <h2>Get in Touch</h2>
+          <p>We're here to help! Reach out to us through any of these channels.</p>
+        </div>
+
+        <div class="contact-cards">
+          <div class="contact-card">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-info">
+              <h3>Email Us</h3>
+              <p>Send us an email anytime. We'll get back to you within 24 hours.</p>
+              <a href="mailto:sneakyfinds04@gmail.com" class="contact-link">sneakyfinds04@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">
+              <i class="fas fa-headset"></i>
+            </div>
+            <div class="contact-info">
+              <h3>Call SneakyFinds</h3>
+              <p>Contact our main business line for immediate assistance with your orders or inquiries.</p>
+              <a href="tel:0659911502" class="contact-link">065 991 1502</a>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="contact-info">
+              <h3>Call Nhlanhla</h3>
+              <p> For general inquiries.</p>
+              <a href="tel:0680022727" class="contact-link">068 002 2727</a>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-icon">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <div class="contact-info">
+              <h3>Call Lesego</h3>
+              <p> For general inquiries.</p>
+              <a href="tel:0671160641" class="contact-link">067 116 0641</a>
+            </div>
+          </div>
+
+          
+        </div>
+      </section>
+
+      <section id="footer">
+        <div class="footer-container">
+          <div class="footer-links">
+            <a href="https://wa.me/your-number" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.instagram.com/sneaky_finds/" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:sneakyfinds04@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+            <a href="https://t.me/your-telegram" target="_blank" rel="noopener"><i class="fab fa-telegram"></i></a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="cookieConsent.js"></script>
+    <script src="termsConsent.js"></script>
+  </body>
+</html>

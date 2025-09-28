@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order - SneakyFinds</title>
+    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .tracking-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .tracking-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tracking-form input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .tracking-form button {
+            padding: 10px 20px;
+            background: #d40b0b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .tracking-form button:hover {
+            background: #b30909;
+        }
+
+        #trackingError {
+            color: #d40b0b;
+            margin: 10px 0;
+            display: none;
+        }
+
+        #orderDetails {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #orderDetails.active {
+            display: block;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .order-item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            color: #666;
+        }
+
+        .timeline {
+            margin-top: 30px;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: #ddd;
+            top: 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            width: 50%;
+            padding-right: 40px;
+        }
+
+        .timeline-item:nth-child(even) {
+            margin-left: 50%;
+            padding-right: 0;
+            padding-left: 40px;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ddd;
+            border-radius: 50%;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: auto;
+            left: -50px;
+        }
+
+        .timeline-item.active .timeline-content::before {
+            background: #d40b0b;
+        }
+
+        .timeline-date {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-description {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 0;
+            }
+
+            .timeline-item:nth-child(even) {
+                margin-left: 0;
+                padding-left: 70px;
+            }
+
+            .timeline-content::before {
+                left: -50px;
+                right: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section id="header">
+        <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="index.html#about-us">About</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li class="user-menu">
+                    <span id="userDisplay"></span>
+                    <a href="#" onclick="handleLogout()" id="logoutLink">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="tracking-container">
+        <h1>Track Your Order</h1>
+        
+        <div class="tracking-form">
+            <input type="text" id="orderIdInput" placeholder="Enter your Order ID">
+            <button onclick="trackOrder()">Track Order</button>
+        </div>
+
+        <div id="trackingError"></div>
+
+        <div id="orderDetails">
+            <h2>Order Details</h2>
+            <div id="orderItems"></div>
+            <div style="text-align: right; margin-top: 20px;">
+                <strong>Total: R</strong><span id="orderTotal"></span>
+            </div>
+
+            <div class="timeline" id="trackingTimeline">
+                <!-- Timeline items will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="userState.js"></script>
+    <script src="track-order.js" type="module"></script>
+</body>
+</html> 
