@@ -143,6 +143,17 @@
         .timeline-item.active .timeline-content::before {
             background: #d40b0b;
         }
+        
+        .timeline-item.current .timeline-content::before {
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
 
         .timeline-date {
             font-size: 0.9em;
@@ -158,6 +169,24 @@
         .timeline-description {
             color: #666;
             font-size: 0.9em;
+        }
+        
+        .timeline-icon {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            color: #d40b0b;
+        }
+        
+        .timeline-current {
+            background: #4CAF50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
@@ -184,6 +213,14 @@
     </style>
 </head>
 <body>
+    <!-- Video Background -->
+    <div class="video-background">
+      <video autoplay muted loop playsinline>
+        <source src="market-video.mp4" type="video/mp4">
+        <!-- Fallback: if video doesn't load, the CSS fallback background will show -->
+      </video>
+    </div>
+
     <section id="header">
         <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
         <div>

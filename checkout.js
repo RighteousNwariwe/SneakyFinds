@@ -1,14 +1,8 @@
 // Import Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-storage.js";
-
-// Initialize Shopify Client
-const shopifyClient = ShopifyBuy.buildClient({
-    domain: 'your-store.myshopify.com',
-    storefrontAccessToken: 'your-storefront-access-token'
-});
 
 // Firebase configuration
 const firebaseConfig = {
@@ -56,19 +50,32 @@ document.getElementById('paymentForm').addEventListener('submit', async function
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
             address: document.getElementById('address').value,
+            cardName: document.getElementById('cardName').value,
+            cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+            expiry: document.getElementById('expiry').value,
+            cvv: document.getElementById('cvv').value,
             items: JSON.parse(sessionStorage.getItem('checkoutItems')) || JSON.parse(localStorage.getItem('cartItems')) || [],
             total: document.getElementById('checkoutTotal').textContent,
             orderDate: new Date().toISOString(),
-            userId: auth.currentUser.uid,
+            userId: auth.currentUser?.uid || 'guest',
             status: 'pending'
         };
 
-        // Create Shopify checkout
-        const checkout = await createShopifyCheckout(formData);
+        // Validate form data
+        if (!validateFormData(formData)) {
+            throw new Error('Please fill in all required fields correctly.');
+        }
         
-        // If checkout creation successful, save order to Firestore
+        // Validate payment details
+        if (!validatePaymentDetails(formData)) {
+            throw new Error('Please enter valid payment details.');
+        }
+        
+        // Process payment (simulate payment processing)
+        await processPayment(formData);
+        
+        // Save order to Firestore
         const orderRef = await addDoc(collection(db, 'orders'), {
-            shopifyCheckoutId: checkout.id,
             orderId: formData.orderId,
             userId: formData.userId,
             name: formData.name,
@@ -78,13 +85,16 @@ document.getElementById('paymentForm').addEventListener('submit', async function
             items: formData.items,
             total: formData.total,
             orderDate: formData.orderDate,
-            status: formData.status
+            status: formData.status,
+            paymentMethod: 'card',
+            paymentStatus: 'completed'
         });
         
         // Send confirmation email
         await sendOrderConfirmationEmail({
             ...formData,
-            orderId: formData.orderId
+            orderId: formData.orderId,
+            orderRef: orderRef.id
         });
         
         // Clear cart and checkout items
@@ -92,23 +102,28 @@ document.getElementById('paymentForm').addEventListener('submit', async function
         sessionStorage.removeItem('checkoutItems');
         
         // Show success message
-        successMessage.textContent = 'Order placed successfully! Redirecting to payment...';
+        successMessage.textContent = 'Order placed successfully! You will receive a confirmation email shortly.';
         successMessage.style.display = 'block';
         
-        // Redirect to Shopify checkout
-        window.location.href = checkout.webUrl;
+        // Redirect to success page or order tracking
+        setTimeout(() => {
+            window.location.href = `track-order.html?orderId=${orderRef.id}`;
+        }, 2000);
         
     } catch (error) {
         console.error('Checkout error:', error);
-        errorMessage.textContent = 'An error occurred while processing your payment. Please try again.';
+        errorMessage.textContent = error.message || 'An error occurred while processing your payment. Please try again.';
         errorMessage.style.display = 'block';
         payButton.disabled = false;
         payButton.textContent = 'Pay Now';
     }
 });
 
-// Create Shopify checkout
-async function createShopifyCheckout(formData) {
+// Validate form data
+function validateFormData(formData) {
+    const required = ['name', 'email', 'phone', 'address', 'cardName', 'cardNumber', 'expiry', 'cvv'];
+    return required.every(field => formData[field] && formData[field].trim() !== '');
+}
     try {
         // Create checkout
         const checkout = await shopifyClient.checkout.create();
@@ -154,15 +169,28 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Load user data from Firestore
+        try {
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                document.getElementById('name').value = userData.displayName || user.displayName || '';
+                document.getElementById('phone').value = userData.phone || userData.phoneNumber || '';
+                document.getElementById('address').value = userData.location || '';
+            }
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+        
         const pendingCheckout = localStorage.getItem('pendingCheckout');
         if (pendingCheckout) {
             localStorage.removeItem('pendingCheckout');
             loadCartItems();
-            document.getElementById('email').value = user.email || '';
         } else {
             loadCartItems();
-            document.getElementById('email').value = user.email || '';
         }
+        
+        document.getElementById('email').value = user.email || '';
     });
 });
 
@@ -218,36 +246,6 @@ function loadCartItems() {
     
     checkoutTotal.textContent = total.toFixed(2);
 
-    // Pre-fill user details if available
-    const user = getCurrentUser();
-    if (user) {
-        document.getElementById('email').value = user.email || '';
-        document.getElementById('name').value = user.displayName || '';
-        document.getElementById('phone').value = user.phone || '';
-    }
-}
-
-// Validate card details
-function validateCardDetails(formData) {
-    // Card number validation (16 digits)
-    const cardNumberRegex = /^[0-9]{16}$/;
-    if (!cardNumberRegex.test(formData.cardNumber)) {
-        return false;
-    }
-    
-    // Expiry date validation (MM/YY format)
-    const expiryRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
-    if (!expiryRegex.test(formData.expiry)) {
-        return false;
-    }
-    
-    // CVV validation (3-4 digits)
-    const cvvRegex = /^[0-9]{3,4}$/;
-    if (!cvvRegex.test(formData.cvv)) {
-        return false;
-    }
-    
-    return true;
 }
 
 // Function to send order confirmation email
@@ -271,13 +269,16 @@ async function sendOrderConfirmationEmail(orderData) {
             <h3>Next Steps:</h3>
             <p>1. We will process your order within 24 hours.</p>
             <p>2. You will receive a delivery confirmation email once your order is shipped.</p>
-            <p>3. For any questions, please contact us at sneakyfinds04@gmail.com</p>
+            <p>3. Track your order: <a href="${window.location.origin}/track-order.html?orderId=${orderData.orderRef}">Track Order</a></p>
+            <p>4. For any questions, please contact us at sneakyfinds04@gmail.com</p>
         `
     };
     
-    // Send email using your preferred email service
-    // This is a placeholder - implement your email sending logic here
+    // In a real application, you would send this via your email service
     console.log('Sending email:', emailData);
+    
+    // For demo purposes, show a success message
+    return Promise.resolve({ success: true });
 }
 
 // Input validation and formatting
@@ -294,4 +295,3 @@ document.getElementById('expiry').addEventListener('input', function(e) {
 
 document.getElementById('cvv').addEventListener('input', function(e) {
     this.value = this.value.replace(/\D/g, '').substring(0, 3);
-}); 
