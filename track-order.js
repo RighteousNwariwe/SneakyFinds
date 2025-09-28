@@ -30,15 +30,28 @@ async function trackOrder() {
     }
 
     try {
-        // Get order from Firestore
-        const orderDoc = await getDoc(doc(db, 'orders', orderId));
+        // Try to get order by document ID first
+        let orderDoc = await getDoc(doc(db, 'orders', orderId));
+        let order = null;
         
-        if (!orderDoc.exists()) {
+        if (orderDoc.exists()) {
+            order = { id: orderDoc.id, ...orderDoc.data() };
+        } else {
+            // If not found by document ID, search by orderId field
+            const ordersRef = collection(db, 'orders');
+            const q = query(ordersRef, where('orderId', '==', orderId));
+            const querySnapshot = await getDocs(q);
+            
+            if (!querySnapshot.empty) {
+                const doc = querySnapshot.docs[0];
+                order = { id: doc.id, ...doc.data() };
+            }
+        }
+
+        if (!order) {
             showError('Order not found. Please check the order ID and try again.');
             return;
         }
-
-        const order = orderDoc.data();
         
         // Show order details
         showOrderDetails(order);
@@ -90,48 +103,47 @@ function showTrackingTimeline(order) {
         {
             status: 'pending',
             title: 'Order Placed',
-            description: 'Your order has been placed successfully.'
+            description: 'Your order has been placed successfully.',
+            icon: 'fas fa-check-circle'
         },
         {
             status: 'processing',
             title: 'Processing',
-            description: 'We are processing your order.'
+            description: 'We are processing your order.',
+            icon: 'fas fa-cog'
         },
         {
             status: 'shipped',
             title: 'Shipped',
-            description: 'Your order has been shipped.'
+            description: 'Your order has been shipped.',
+            icon: 'fas fa-shipping-fast'
         },
         {
             status: 'delivered',
             title: 'Delivered',
-            description: 'Your order has been delivered.'
+            description: 'Your order has been delivered.',
+            icon: 'fas fa-home'
         }
     ];
 
-    let currentStatusFound = false;
-    statuses.forEach(status => {
-        const isActive = !currentStatusFound && (
-            status.status === order.status || 
-            (status.status === 'pending' && order.status === 'processing') ||
-            (status.status === 'pending' && order.status === 'shipped') ||
-            (status.status === 'processing' && order.status === 'shipped') ||
-            (status.status === 'pending' && order.status === 'delivered') ||
-            (status.status === 'processing' && order.status === 'delivered') ||
-            (status.status === 'shipped' && order.status === 'delivered')
-        );
 
-        if (status.status === order.status) {
-            currentStatusFound = true;
-        }
+    const statusOrder = ['pending', 'processing', 'shipped', 'delivered'];
+    const currentStatusIndex = statusOrder.indexOf(order.status);
 
+    statuses.forEach((status, index) => {
+        const isActive = index <= currentStatusIndex;
+        const isCurrent = index === currentStatusIndex;
         const timelineItem = document.createElement('div');
-        timelineItem.className = `timeline-item${isActive ? ' active' : ''}`;
+        timelineItem.className = `timeline-item${isActive ? ' active' : ''}${isCurrent ? ' current' : ''}`;
         timelineItem.innerHTML = `
             <div class="timeline-content">
+                <div class="timeline-icon">
+                    <i class="${status.icon}"></i>
+                </div>
                 <div class="timeline-date">${formatDate(order.orderDate)}</div>
                 <div class="timeline-title">${status.title}</div>
                 <div class="timeline-description">${status.description}</div>
+                ${isCurrent ? '<div class="timeline-current">Current Status</div>' : ''}
             </div>
         `;
         timeline.appendChild(timelineItem);
@@ -161,4 +173,3 @@ function showError(message) {
 }
 
 // Make functions available globally
-window.trackOrder = trackOrder; 
