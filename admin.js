@@ -29,24 +29,9 @@ onAuthStateChanged(auth, async (user) => {
         return;
     }
 
-    try {
-        // Check if user is admin
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        if (!userDoc.exists() || !userDoc.data().isAdmin) {
-            // For demo purposes, make the first user admin
-            // In production, you should have a proper admin setup process
-            if (user.email === 'admin@sneakyfinds.com' || user.email === 'sneakyfinds04@gmail.com') {
-                await setDoc(doc(db, 'users', user.uid), {
-                    isAdmin: true
-                }, { merge: true });
-            } else {
-                alert('Access denied. Admin privileges required.');
-                window.location.href = 'index.html';
-                return;
-            }
-        }
-    } catch (error) {
-        console.error('Error checking admin status:', error);
+    // Check if user is admin
+    const userDoc = await getDocs(collection(db, 'users'), where('uid', '==', user.uid));
+    if (!userDoc.exists() || !userDoc.data().isAdmin) {
         window.location.href = 'index.html';
         return;
     }
@@ -239,14 +224,13 @@ async function loadOrders() {
             const order = doc.data();
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${order.orderId || doc.id}</td>
+                <td>${doc.id}</td>
                 <td>${order.name}</td>
                 <td>${new Date(order.orderDate).toLocaleDateString()}</td>
                 <td>R${order.total}</td>
                 <td><span class="status-badge status-${order.status}">${order.status}</span></td>
                 <td>
                     <button class="action-btn edit-btn" onclick="updateOrderStatus('${doc.id}')">Update Status</button>
-                    <button class="action-btn edit-btn" onclick="viewOrderDetails('${doc.id}')">View Details</button>
                 </td>
             `;
             tableBody.appendChild(row);
@@ -264,16 +248,10 @@ async function loadCustomers() {
         const tableBody = document.getElementById('customerTableBody');
         tableBody.innerHTML = '';
 
-        for (const userDoc of querySnapshot.docs) {
-            const user = userDoc.data();
-            
-            // Skip admin users from customer list
-            if (user.isAdmin) continue;
-            
-            // Get orders for this user
-            const ordersQuery = query(collection(db, 'orders'), where('userId', '==', userDoc.id));
-            const orders = await getDocs(ordersQuery);
-            const totalSpent = orders.docs.reduce((sum, order) => sum + parseFloat(order.data().total || 0), 0);
+        for (const doc of querySnapshot.docs) {
+            const user = doc.data();
+            const orders = await getDocs(collection(db, 'orders'), where('userId', '==', doc.id));
+            const totalSpent = orders.docs.reduce((sum, order) => sum + parseFloat(order.data().total), 0);
 
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -282,7 +260,7 @@ async function loadCustomers() {
                 <td>${orders.size}</td>
                 <td>R${totalSpent.toFixed(2)}</td>
                 <td>
-                    <button class="action-btn edit-btn" onclick="viewCustomerDetails('${userDoc.id}')">View Details</button>
+                    <button class="action-btn edit-btn" onclick="viewCustomerDetails('${doc.id}')">View Details</button>
                 </td>
             `;
             tableBody.appendChild(row);
@@ -295,13 +273,8 @@ async function loadCustomers() {
 
 // Update Order Status
 async function updateOrderStatus(orderId) {
-    const validStatuses = ['pending', 'processing', 'shipped', 'delivered'];
-    const status = prompt(`Enter new status (${validStatuses.join('/')}):`)?.toLowerCase();
-    
-    if (!status || !validStatuses.includes(status)) {
-        alert('Please enter a valid status: ' + validStatuses.join(', '));
-        return;
-    }
+    const status = prompt('Enter new status (pending/processing/shipped/delivered):');
+    if (!status) return;
 
     try {
         // Get the order data first
@@ -314,12 +287,15 @@ async function updateOrderStatus(orderId) {
         
         // Update the status
         await updateDoc(doc(db, 'orders', orderId), {
-            status: status,
-            updatedAt: new Date().toISOString()
+            status: status.toLowerCase()
         });
 
-        // Send status update email (simulate)
-        console.log('Sending status update email for order:', orderId);
+        // Send status update email
+        await sendOrderStatusEmail({
+            ...orderData,
+            orderId: orderId,
+            status: status.toLowerCase()
+        });
 
         loadOrders();
         showNotification('Order status updated and email sent successfully!', 'success');
@@ -346,21 +322,8 @@ async function deleteProduct(productId) {
 // Show Notification
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
+    notification.className = `admin-notification ${type}`;
     notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 12px 24px;
-        border-radius: 4px;
-        z-index: 1000;
-        color: white;
-        font-weight: 500;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        background: ${type === 'success' ? '#4CAF50' : '#f44336'};
-        animation: slideIn 0.3s ease-out;
-    `;
     document.body.appendChild(notification);
 
     setTimeout(() => {
@@ -368,17 +331,9 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-// View Order Details
-function viewOrderDetails(orderId) {
-    // Redirect to order tracking page
-    window.open(`track-order.html?orderId=${orderId}`, '_blank');
-// View Customer Details
-function viewCustomerDetails(userId) {
-    // In a real application, you might show a modal with customer details
-    alert(`Customer details for user ID: ${userId}\nThis would show detailed customer information in a real application.`);
-}
-}
 // Make functions available globally
 window.showSection = showSection;
 window.updateOrderStatus = updateOrderStatus;
 window.deleteProduct = deleteProduct;
+window.editProduct = editProduct;
+window.viewCustomerDetails = viewCustomerDetails; 

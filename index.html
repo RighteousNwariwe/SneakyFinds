@@ -14,6 +14,7 @@
   <script src="script.js"></script> <!-- Link to  JavaScript file -->
 
 
+
   <!-- section for the top navigation ---->
   <section id="header">
     <a href="index.html"><img src="trans_bg.png" alt="logo" id="logo" style="height:100px;"></a>
@@ -31,6 +32,25 @@
                 </a>
             </li>
         </ul>
+    </div>
+    <div class="shopping-cart" onclick="togglePopup()">
+        <img src="cart.png" alt="Shopping Cart">
+        <span id="cartCount">0</span>
+        <div id="cartPopup" class="popup" style="display: none;">
+          <h4>Shopping Cart</h4>
+          <ul id="cartItems">
+            <!-- Cart items will be added here dynamically -->
+          </ul>
+          <div class="cart-total">
+            <p>Total: R<span id="cartTotal">0</span></p>
+          </div>
+          <div class="cart-buttons">
+            <button class="cart-button clear-cart" onclick="clearCart()">Clear Cart</button>
+            <button class="cart-button close-cart" onclick="hidePopup()">Close</button>
+            <a href="checkout.html" class="cart-button checkout-btn">Checkout</a>
+          </div>
+        </div>
+        <div class="overlay" id="overlay" onclick="hidePopup()"></div>
     </div>
   </section>
   <br>
@@ -121,36 +141,27 @@
         appId: "1:228153574320:web:0fbc2743ab4287b0634c75",
         measurementId: "G-NZ17V7Q1SQ"
     };
-    
-    try {
-        firebase.initializeApp(firebaseConfig);
-    } catch (error) {
-        console.error('Firebase initialization error:', error);
-    }
+    firebase.initializeApp(firebaseConfig);
 
     // Update user display when page loads
     document.addEventListener('DOMContentLoaded', function() {
         updateUserDisplay();
         
         // Check authentication state
-        try {
-            firebase.auth().onAuthStateChanged(function(user) {
-                if (user) {
-                    // User is signed in
-                    document.getElementById('loginLink').style.display = 'none';
-                    document.getElementById('logoutLink').style.display = 'inline';
-                    document.getElementById('userDisplay').textContent = user.email.split('@')[0];
-                    document.getElementById('userDisplay').style.display = 'inline';
-                } else {
-                    // No user is signed in
-                    document.getElementById('loginLink').style.display = 'inline';
-                    document.getElementById('logoutLink').style.display = 'none';
-                    document.getElementById('userDisplay').style.display = 'none';
-                }
-            });
-        } catch (error) {
-            console.error('Auth state change error:', error);
-        }
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // User is signed in
+                document.getElementById('loginLink').style.display = 'none';
+                document.getElementById('logoutLink').style.display = 'inline';
+                document.getElementById('userDisplay').textContent = user.email.split('@')[0];
+                document.getElementById('userDisplay').style.display = 'inline';
+            } else {
+                // No user is signed in
+                document.getElementById('loginLink').style.display = 'inline';
+                document.getElementById('logoutLink').style.display = 'none';
+                document.getElementById('userDisplay').style.display = 'none';
+            }
+        });
     });
   </script>
   </div>
