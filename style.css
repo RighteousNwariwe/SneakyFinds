@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:200');
-
 /* styles.css */
+
 
 html, body {
   overflow: auto;
@@ -54,85 +53,14 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-  width: 100%;
-  overflow-y: scroll;
-}
-
-/* Video Background */
-.video-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  overflow: hidden;
-}
-
-.video-background video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  transform: translateX(-50%) translateY(-50%);
-  object-fit: cover;
-}
-
-/* Fallback background for when video doesn't load */
-.video-background::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg');
-  background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
-  z-index: -2;
-}
-
-/* Overlay to make content more readable */
-.video-background::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+  background-position: center;
+  background-size: cover;
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: -1;
-}
-
-@-webkit-keyframes slidein {
-  from {
-    background-position: center top;
-    background-size: 100% auto;
-  }
-  to {
-    background-position: center bottom;
-    background-size: 120% auto;
-  }
-}
-
-@keyframes slidein {
-  from {
-    background-position: center top;
-    background-size: 100% auto;
-  }
-  to {
-    background-position: center bottom;
-    background-size: 120% auto;
-  }
+  position: relative;
+  min-height: 100vh;
+  overflow-y: scroll;
+  background-color: #000;
 }
 
 .categories {
@@ -189,13 +117,12 @@ nav{
 }
 
 spline-viewer {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -2; /* Put it behind the body background */
-  pointer-events: none; /* Allow clicks to pass through */
+  z-index: -1; /*When z-index: -1; is applied, it places the element behind other elements that have a z-index of 0 or higher. This is useful for background elements that should not overlap with other content.*/
 }
 h1 {
     color: rgb(255, 255, 255);
@@ -529,3 +456,6 @@ then set the desired styles for .card-img. */
   .clothes-btn:active {
     transform: translateY(3px);
   }
+  
+
+  div.clothes-
